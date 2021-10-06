@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+              <h2>成组设计的两样本均数比较</h2>
+       
+
+        <div class="div2" style="margin-left: 5%;">
+            <p style="text-align: left;">一、若为原始数据，请选择原始数据区域：</p>
+            <div class="div1">            
+                <input id="input1" type="text" style='border-left: 0px; border-top: 0px; border-right: 0px; border-bottom: 1px; width: 172px;;height: 25px;'>
+                <button id="select1" onclick="select1()" type="button" value=" "
+                    style="width: 27px; height: 27px; border: 1; background: none; border: none; float: right;background-image:url(./images/select.svg)">
+                </button>     
+            </div>
+            <p><span style="color: red;">数据格式要求：</span> 两列数据区域，顶部要包含标题；两列数据样本量不同，程序自行过滤空值。</p>
+            <hr>
+            <div style="text-align: left;">
+
+                <span>二、如已求有均数及标准差，请输入：</span><p></p>            
+                <span style="color: red;">1、请输入样本量：</span><span>组1样本量：</span><input type="text" class="input" id="n1">
+                                                                     <span>组2样本量：</span><input type="text" class="input" id="n2"><p></p> 
+                <span style="color: red;">2、请输入均__值：</span><span>组1：均值：</span><input type="text" class="input" id="average1">
+                                                                     <span>组2：均值：</span><input type="text" class="input" id="average2"><p></p> 
+                <span style="color: red;">3、请输入标准差：</span><span>组1标准差：</span><input type="text" class="input" id="sd1">
+                                                                    <span>组2标准差：</span><input type="text" class="input" id="sd2"><p></p> 
+               
+            </div>
+        </div>  
+        <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button>
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        <div style="margin-left: 5%;">
+            <p style="text-align: left;">一、第一步要进行两样本方差不是相等；即方差齐性检验</p>
+            <p style="text-align: left;">经计算可得，方差齐性检验结果为 : <span id="sdtest" style="color: red;font-size:large;">F检验p值</span></p>
+            <hr>
+            <P style="color:red;text-align: left;">（一）方差相等时的检验结果：</P>
+            <p style="text-align: left;">经计算可得，检验统计量 t : <span id="tvalue1" style="color: red;font-size:large;">统计量</span></p>           
+            <p style="text-align: left;">经计算可得，检验P值 : <span id="pvalue1" style="color: red;font-size:large;">P值</span></p>
+            <p></p>
+            <P style="color: red;text-align: left;">（二）方差不齐时的检验结果（近似t检验）：</P>
+            <p style="text-align: left;">经计算可得，检验统计量 t : <span id="tvalue2" style="color: red;font-size:large;">统计量</span></p>            
+            <p style="text-align: left;">经计算可得，自由度 : <span id="freedom2" style="color: red;font-size:large;">自由度</span></p>            
+            <p style="text-align: left;">经计算可得，检验P值 : <span id="pvalue2" style="color: red;font-size:large;">P值</span></p>
+            <p></p>
+
+        </div>
+        <p>示例数据：</p> 
+        <img src="./images/three.png" alt=""> 
+      
+    </div>
+</body>
+
+<script>
+   
+    
+    function select1(){
+        var ar=[]
+        var br=[]
+        var str=wps.Application.InputBox("请选择你要输入的单元格：", undefined, undefined, undefined, undefined, undefined, undefined, 8)
+        window.document.getElementById("input1").value=str.Address()
+        var arr=str.Value2
+        for (var i = 1; i < str.Rows.Count; i++) {
+            if(arr[i][0]!=null){ar.push(arr[i][0]*1)}         
+            if(arr[i][1]!=null){br.push(arr[i][1]*1)} 
+        }
+        var n1=ar.length
+        var n2=br.length
+        var average1=ar.reduce((a,b)=>a+b)/n1
+        var average2=br.reduce((a,b)=>a+b)/n2
+        var sd1=Math.sqrt( ar.map(a=>{return (a-average1)*(a-average1)}).reduce((a,b)=>a+b)/(n1-1))
+        var sd2=Math.sqrt( br.map(a=>{return (a-average2)*(a-average2)}).reduce((a,b)=>a+b)/(n2-1))
+        
+        document.getElementById("n1").value=n1
+        document.getElementById("n2").value=n2
+        document.getElementById("average1").value=average1
+        document.getElementById("average2").value=average2
+        document.getElementById("sd1").value=sd1
+        document.getElementById("sd2").value=sd2
+
+    }
+
+    function compute(){
+        var n1=document.getElementById("n1").value*1
+        var n2=document.getElementById("n2").value*1
+        var average1=document.getElementById("average1").value*1
+        var average2=document.getElementById("average2").value*1
+        var sd1=document.getElementById("sd1").value*1
+        var sd2=document.getElementById("sd2").value*1
+        
+        //方差齐性检验
+        var F=Math.max(sd1*sd1,sd2*sd2)/Math.min(sd1*sd1,sd2*sd2)
+        var a=n1-1
+        var b=n2-1
+        var sdtest=wps.Application.ExecuteExcel4Macro("FDIST("+F+","+a+","+b+")")
+        if(sdtest<0.1){
+            var sdstr="方差不齐。"
+        }else{
+            var sdstr="方差相等。"            
+        }
+        document.getElementById("sdtest").innerHTML="F检验P值为："+sdtest.toFixed(5)+","+sdstr
+
+        // t检验样本量计算
+        //方差齐
+        var sc1=(sd1*sd1*(n1-1)+sd2*sd2*(n2-1))/(n1+n2-2)
+        var tvalue1=(average1-average2)/Math.sqrt(sc1*(1/n1+1/n2))
+        var freedom1=n1+n2-2
+        var pvalue1=wps.Application.ExecuteExcel4Macro("TDIST("+tvalue1+","+freedom1+",2)")
+        document.getElementById("tvalue1").innerHTML=tvalue1.toFixed(5)    
+        document.getElementById("pvalue1").innerHTML=pvalue1.toFixed(5)
+
+        //方差不齐
+        
+        var tvalue2=(average1-average2)/Math.sqrt(sd1*sd1/n1+sd2*sd2/n2)
+        var vv=(sd1*sd1/n1)*(sd1*sd1/n1)/(n1-1)+(sd2*sd2/n2)*(sd2*sd2/n2)/(n2-1)
+        var freedom2=(sd1*sd1/n1+sd2*sd2/n2)*(sd1*sd1/n1+sd2*sd2/n2)/vv
+        var pvalue2=wps.Application.ExecuteExcel4Macro("TDIST("+tvalue2+","+freedom2+",2)")
+
+        document.getElementById("tvalue2").innerHTML=tvalue2.toFixed(5)  
+        document.getElementById("freedom2").innerHTML=freedom2  
+        document.getElementById("pvalue2").innerHTML=pvalue2.toFixed(5)
+
+
+    }
+
+
+</script>
+
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+    .div1 {
+        /*添加背景图*/
+        /* background-image: url(images/1.svg); */
+        /*定义画的格子大小*/
+        width: 200px;
+        height: 27px;
+        text-align: center;
+        border: 2px solid #429eaa;
+        margin: auto;
+       
+    }
+    .input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+    .input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+
+</style>
+
+
+</html>

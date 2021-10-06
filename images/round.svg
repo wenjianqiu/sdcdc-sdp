@@ -1,0 +1,16 @@
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="26" width="26" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <text font-weight="bold" stroke="#000000" transform="matrix(2.1344225162644133,0,0,1.094989713919197,-5.5959410817381805,0.38760252094284764) " xml:space="preserve" text-anchor="start" font-family="'League Gothic', sans-serif" font-size="8" id="svg_22" y="8.025892" x="4.069496" fill-opacity="null" stroke-opacity="null" stroke-width="0" fill="#000000">1.5</text>
+  <text font-weight="bold" stroke="#000000" transform="matrix(1.7211772907424037,0,0,1.094989713919197,0.45101436249073235,0.38760252094284764) " xml:space="preserve" text-anchor="start" font-family="'League Gothic', sans-serif" font-size="8" id="svg_26" y="17.454608" x="6.003497" fill-opacity="null" stroke-opacity="null" stroke-width="0" fill="#000000">2.0</text>
+  <path transform="rotate(89.54630279541016 6.817616939544678,14.980961799621582) " stroke="#56ff56" id="svg_27" d="m3.646567,16.517322l4.344337,0l0,-3.072722l-0.66592,0l1.33184,-1.536361l1.331841,1.536361l-0.66592,0l0,4.609083l-5.676178,0l0,-1.536361z" fill-opacity="null" stroke-opacity="null" stroke-width="2" fill="none"/>
+ </g>
+</svg>

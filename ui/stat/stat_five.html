@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+              <h2>等效检验：样本均数与总体均数</h2>
+        <hr style="  border-top: 2px dotted  #8c8b8b;" width="90%"/><br>
+
+        <div class="div2" style="text-align: left; margin-left: 10%;">
+            <p>
+                <span>一、请输入总体均数：</span> <input type="text" class="input" id="allmean"><p></p>
+                <span>二、请输入等效界值：</span> <input type="text"  class="input" id="delta"><p></p>
+                <span>三、若已经计算出样本参数，请输入：</span> <p></p>
+                样本量 n : <input type="text" id="n" class="input" ><p></p>
+                样本均数 x : <input type="text" id="x" class="input" ><p></p>
+                样本标准差 std : <input type="text" id="std" class="input" ><p></p>
+            </p>
+            <span style="color: red;">若为原始数据，请选择数据区域：(格式要求：一列原始数据，数据区域均需包含题目。)</span><p></p>
+            
+            <div class="div1">            
+                <input id="input1" type="text" style='border-left: 0px; border-top: 0px; border-right: 0px; border-bottom: 1px; width: 172px;;height: 25px;'>
+                <button id="select1" onclick="select1()" type="button" value=" "
+                    style="width: 27px; height: 27px; border: 1; background: none; border: none; float: right;background-image:url(./images/select.svg)">
+                </button>
+            </div>
+        </div>  
+        <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button>
+
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        <div style="margin-left: 5%;">
+            <table id="result">
+                <tr><th>组别</th> <th>n</th><th>均数</th><th>标准差</th><th>x±s</th><th>t值</th><th>P值</th></tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                
+                </tr>
+            </table>
+
+        </div>
+        
+      
+    </div>
+</body>
+
+<script>
+
+    //选择数据
+    function select1(){
+        var str=wps.Application.InputBox("请选择你要输入的单元格：", undefined, undefined, undefined, undefined, undefined, undefined, 8)
+        window.document.getElementById("input1").value=str.Address()
+        var arr=str.Value2        
+        var group1=[]        
+        for (var i = 1; i < arr.length; i++) {
+             group1.push(arr[i][0])           
+        }
+       var g1=liststat(group1)     
+   
+        document.getElementById('n').value=g1[0]
+        document.getElementById('x').value=g1[2]
+        document.getElementById('std').value=g1[3]
+          
+    }
+
+    //求list的样本量 均数和标准差
+    function liststat(mylist){
+        var n=mylist.length
+        var sum=mylist.reduce((a,b)=>a+b)
+        var mean=sum/n
+        var std=Math.sqrt( mylist.map(a=>{return (a-mean)*(a-mean)}).reduce((a,b)=>a+b)/(n-1))
+        var result=new Array(n,sum,mean,std)
+        return result
+    }
+
+    //执行计算
+    function compute(){
+        //获取数据
+        var allmean=document.getElementById('allmean').value*1
+        var delta=document.getElementById('delta').value*1
+        var n=document.getElementById('n').value*1
+        var x=document.getElementById('x').value*1
+        var std=document.getElementById('std').value*1
+
+        var tvalue=(delta-Math.abs(x-allmean))/std*Math.sqrt(n)
+       var freedom=n-1
+       var abst=Math.abs(tvalue)    
+       var pvalue=wps.Application.ExecuteExcel4Macro("TDIST("+abst+","+freedom+",2)")
+        // alert(pvalue)
+       //将结果显示到表格中
+       var table=document.getElementById("result")
+       table.rows[1].cells[0].innerHTML="样本组"     
+       table.rows[1].cells[1].innerHTML=n      
+       table.rows[1].cells[2].innerHTML=x.toFixed(4);       
+       table.rows[1].cells[3].innerHTML=std.toFixed(4);       
+       table.rows[1].cells[4].innerHTML=x.toFixed(4)+"±"+std.toFixed(4);       
+       table.rows[1].cells[5].innerHTML=tvalue.toFixed(4);
+       table.rows[1].cells[6].innerHTML=pvalue.toFixed(4);
+    
+    }
+
+
+
+</script>
+
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+    .div1 {
+	/*添加背景图*/
+	/* background-image: url(images/1.svg); */
+	/*定义画的格子大小*/
+	width: 200px;
+	height: 27px;
+	text-align: center;
+	border: 2px solid #429eaa;
+    margin-left:25%;
+}
+    table,table tr th, table tr td { border:1px solid #0094ff; }
+    table { width: 80%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse; margin: auto;}   
+
+    .input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+    .input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+</style>
+
+
+</html>

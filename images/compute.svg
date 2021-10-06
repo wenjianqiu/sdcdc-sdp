@@ -1,0 +1,24 @@
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="26" width="26" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect stroke="#000000" rx="2" id="svg_9" height="21.46789" width="22.201834" y="1.215881" x="1.036697" fill="none"/>
+  <rect stroke="#666666" id="svg_38" height="1.009175" width="20.183486" y="10.940652" x="2.045872" stroke-width="null" fill="#666666"/>
+  <rect stroke="#666666" id="svg_43" height="19.633027" width="1.376146" y="2.133311" x="11.311927" stroke-width="null" fill="#666666"/>
+  <rect stroke="#D1FFB4" id="svg_45" height="1.100918" width="6.146788" y="5.34432" x="3.238533" stroke-width="null" fill="#D1FFB4"/>
+  <rect stroke="#D1FFB4" id="svg_52" height="1.100918" width="6.146788" y="5.252577" x="14.981652" stroke-width="null" fill="#D1FFB4"/>
+  <rect transform="rotate(-37.6248664855957 6.6788997650146555,17.546154022216797) " stroke="#D1FFB4" id="svg_53" height="1.100918" width="6.146788" y="16.995696" x="3.605505" stroke-width="null" fill="#D1FFB4"/>
+  <rect transform="rotate(39.48147964477539 6.678899765014648,17.362667083740234) " stroke="#D1FFB4" id="svg_54" height="1.100918" width="6.146788" y="16.812209" x="3.605505" stroke-width="null" fill="#D1FFB4"/>
+  <rect stroke="#849854" id="svg_55" height="0.917432" width="6.146788" y="14.977347" x="15.073395" stroke-width="null" fill="none"/>
+  <rect transform="rotate(90 6.31192684173584,5.894778728485108) " stroke="#D1FFB4" id="svg_57" height="1.100918" width="6.146788" y="5.34432" x="3.238533" stroke-width="null" fill="#D1FFB4"/>
+  <rect stroke="#849854" id="svg_59" height="0.917432" width="6.146788" y="18.463585" x="15.165138" stroke-width="null" fill="none"/>
+ </g>
+</svg>

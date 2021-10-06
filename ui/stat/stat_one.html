@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+              <h3>估计频率分布-正态分布应用</h3>
+        <hr style="  border-top: 2px dotted  #8c8b8b;" width="90%"/><br>
+
+        <div class="div2" style="text-align: left; margin-left: 10%;">
+            <p>
+                <span>一、已知的总体均数：</span> <input type="text" class="input" id="allmean"><p></p>
+                <span>二、已知的总体标准差：</span> <input type="text"  class="input" id="std"><p></p>
+                <span>三、请输入要估算的数值范围：</span> <input type="text"  class="input" id="start"> <span>--</span> <input type="text"  class="input" id="end"><p></p>        
+         
+            </p>
+            <span style="color: red;">若为求小于某个值，<=2500,则只在范围后面输入2500；</span><p></p>
+                      
+        </div>  
+        <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button>
+
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        <div style="margin-left: 5%;">
+            <table id="result">
+                <tr><th>取值点</th><th>数值</th> <th>标准化u值</th><th>累计概率密度</th><th>所占比例%</th></tr>
+                <tr>
+                    <td>start</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                                      
+                    <td></td>                                      
+                </tr>
+                <tr>
+                    <td>end</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                                      
+                </tr>
+              
+            </table>
+
+        </div>
+        
+      
+    </div>
+</body>
+
+<script>
+
+    //执行计算
+    function compute(){
+        //获取数据
+        var allmean=document.getElementById('allmean').value*1
+        var std=document.getElementById('std').value*1
+        var start=document.getElementById('start').value
+        var end=document.getElementById('end').value      
+        if(start!=""){
+            var start_u=(start-allmean)/std 
+            var fx_start="NORMDIST("+start+","+allmean+","+std+",TRUE)"
+            var pstart=wps.Application.ExecuteExcel4Macro(fx_start)
+        }else{
+            var start_u=0           
+            var pstart=0
+        }
+        if(end!=""){
+            var end_u=(end*1-allmean)/std             
+            var fx_end="NORMDIST("+end*1+","+allmean+","+std+",TRUE)"           
+            var pend=wps.Application.ExecuteExcel4Macro(fx_end)
+        }else{
+            var end_u=0            
+            var pend=1
+        }        
+        var result=(pend-pstart)*100
+        
+
+       //将结果显示到表格中
+       var table=document.getElementById("result")
+       table.rows[1].cells[1].innerHTML=start 
+       table.rows[2].cells[1].innerHTML=end
+       table.rows[1].cells[2].innerHTML=start_u.toFixed(4)
+       table.rows[2].cells[2].innerHTML=end_u.toFixed(4)
+       table.rows[1].cells[3].innerHTML=pstart.toFixed(4)   
+       table.rows[2].cells[3].innerHTML=pend.toFixed(4)
+       table.rows[1].cells[4].innerHTML=result.toFixed(4)
+      
+    
+    }
+
+
+
+</script>
+
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+
+    table,table tr th, table tr td { border:1px solid #0094ff; }
+    table { width: 80%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse; margin: auto;}   
+
+    .input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+    .input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+</style>
+
+
+</html>

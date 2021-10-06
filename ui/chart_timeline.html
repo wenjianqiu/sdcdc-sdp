@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src="../js/util.js"></script>
+<script type="text/javascript" src="../js/chart/echarts.min.js"></script>
+<script type="text/javascript" src="../.debugTemp/wpsjsrpcsdk.js"></script>
+<body style="background-color: gray;text-align: center;">
+ 
+          <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 850px;height:450px;margin: auto;background-color:white;"></div>
+   
+<div style="margin:10px;margin-top: 20px;">
+    <button class="login-button" onclick="gif()">启动GIF录制动图</button>    
+</div>
+    <p style="font-weight: bold;font-size: larger;color:yellow;">示例数据</p>
+	<img src="./stat/images/timeline.png" alt="">
+</body>
+
+<script>
+var mydata=[]
+var time=[]
+var arr=wps.Application.Selection.Value2
+var timegroup=arr[0].slice(1)
+var brr=arr[0].map(function(col,i){return arr.map(function(row){return row[i];})})
+var xdata=brr[0].slice(1)
+for(var i =1;i<brr.length;i++){
+    var tmp={'text': brr[i][0],
+            'series': [
+                {'data': brr[i].slice(1)}, 
+            ]}
+    mydata.push(tmp)
+}
+
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById('main'));
+
+var option={
+        // `baseOption` 的属性.
+            baseOption:{
+                timeline: {
+                    axisType: 'category',
+                    // `timeline.data` 中的每一项，对应于 `options`
+                    autoPlay: true,
+                    // currentIndex: 2,
+                    playInterval: 1000,
+                    // 数组中的每个 `option`
+                    data: timegroup
+                },
+                calculable : true,
+                grid:{
+                    top: 80,
+                    bottom: 100
+                },
+                toolbox: {
+                   show:true,
+                   feature: {                   
+                        dataView: {readOnly: false},
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},                    
+                    }
+                },                
+                xAxis: [{
+                    'type':'category',
+                    'axisLabel':{'interval':0},
+                    'data':xdata,
+                    'splitLine': {
+                        show: false
+                    },
+                    
+                }],
+                yAxis: [{
+                    type:'value',
+                    name:"",                    
+                    axisLine:{
+                        show:true,
+                    },            
+                    axisTick:{
+                        show:true,                
+                    },
+                }],
+                series: [{
+                    // 系列一的一些其他配置
+                    name:"test",
+                    type: 'bar',
+                    color:'red',
+                }],
+            },
+
+        // `switchableOption`s:
+        options: mydata,
+}
+
+option && myChart.setOption(option);
+
+function gif(){    
+    wps.OAAssist.ShellExecute("C:\\Users\\Administrator\\AppData\\Roaming\\kingsoft\\wps\\jsaddons\\sdp_1.0.0\\tools\\gif.exe")
+}
+
+
+</script>
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+</style>
+
+
+</html>

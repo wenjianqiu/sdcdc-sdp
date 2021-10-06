@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+              <h2>等效检验-两样本率比较</h2>
+        <hr style="  border-top: 3px dotted  #8c8b8b;" width="90%"/>
+        <div style="text-align: left; margin-left: 10%;">
+            <p style="color: red;">第一步：使用常规的卡方检验，</p> 
+            <p>若结果P小于0.05,差异有统计学意义；则无需等效检验，直接认为二者不等效。</p>
+            <p>若结果P大于0.05,差异没有统计学意义；但此时也不能认为二者等效；需要进一步等效检验。</p>
+        </div>
+        <div class="div2" style="text-align: left; margin-left: 10%;">
+            
+            <p style="margin: auto;color:red;">第二步：请输入等效界值： delta：</span><input type="text" class="input" id="delta"> </p>
+            <p style="margin: auto;color:rgb(57, 25, 202);">说明1：等效界值一般建议最大不超过对照组率的20%；</p>
+            <p style="margin: auto;color:rgb(22, 67, 212);">说明2：等效界值是个有临床意义的值，如新药研究中，规定新药有效率要比标准药提高多少才有意义的值。</p>
+            
+            <p style="margin: auto;color:red;">第三步：请选择数据区域：</p>
+            <div class="div1">            
+                <input id="input1" type="text" style='border-left: 0px; border-top: 0px; border-right: 0px; border-bottom: 1px; width: 172px;;height: 25px;'>
+                <button id="select1" onclick="select1()" type="button" value=" "
+                    style="width: 27px; height: 27px; border: 1; background: none; border: none; float: right;background-image:url(./images/select.svg)">
+                </button>     
+            </div>
+            <p> <span style="color: green;">数据格式要求：</span> 常用四格表。</p>
+        </div>  
+        <!-- <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button> -->
+
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        <div style="margin-left: 5%;">
+            <table id="result">
+                <tr><th>组别</th> <th>有效</th><th>无效</th><th>有效率%</th><th>卡方值</th><th>P值</th></tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                                
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                                   
+                </tr>
+            </table>            
+            <p style="text-align: left;color:red;margin-left: 10%;">当P值小于0.05时，我们拒绝H0假设：两组的率差值大于等于等效界值；<br>
+                可以认为两组率之差小于等效界值；认为两组率相同，效果等价。</p>
+        </div>
+        
+      
+    </div>
+</body>
+
+<script>
+    function select1(){
+        var str=wps.Application.InputBox("请选择你要输入的单元格：", undefined, undefined, undefined, undefined, undefined, undefined, 8)
+        var delta=document.getElementById("delta").value*1        
+        window.document.getElementById("input1").value=str.Address()
+        if(delta==0){
+            alert("请先输入等效界值delta！！")
+            window.document.getElementById("input1").value=""
+        }
+        var arr=str.Value2
+        var a=arr[0][0]
+        var b=arr[0][1]
+        var c=arr[1][0]
+        var d=arr[1][1]
+        //试验组
+        var p1=(a+c+(c+d)*delta)/(a+b+c+d)
+        var ta=(a+b)*p1
+        var tb=(a+b)-ta
+        //对照组
+        var p2=(a+c-(a+b)*delta)/(a+b+c+d)
+        var tc=(c+d)*p2
+        var td=c+d-tc
+
+       
+       var kk=(a-ta)*(a-ta)/ta + (b-tb)*(b-tb)/tb + (c-tc)*(c-tc)/tc + (d-td)*(d-td)/td          
+       var pstr="CHIDIST("+kk+",1)"
+       var pvalue=wps.Application.ExecuteExcel4Macro(pstr)
+      
+       //将结果显示到表格中
+       var table=document.getElementById("result")
+       table.rows[1].cells[0].innerHTML="试验组"
+       table.rows[2].cells[0].innerHTML="对照组"
+       table.rows[1].cells[1].innerHTML=a
+       table.rows[2].cells[1].innerHTML=c
+       table.rows[1].cells[2].innerHTML=b
+       table.rows[2].cells[2].innerHTML=d
+       var pp1=a/(a+b)*100
+       table.rows[1].cells[3].innerHTML=pp1.toFixed(4)
+       var pp2=c/(c+d)*100
+       table.rows[2].cells[3].innerHTML=pp2.toFixed(4)
+       table.rows[1].cells[4].innerHTML=kk.toFixed(4)       
+       table.rows[1].cells[5].innerHTML=pvalue.toFixed(4);
+    
+    }
+ 
+
+
+
+</script>
+
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+    .div1 {
+	/*添加背景图*/
+	/* background-image: url(images/1.svg); */
+	/*定义画的格子大小*/
+	width: 200px;
+	height: 27px;
+	text-align: center;
+	border: 2px solid #429eaa;
+    margin: auto;
+}
+    table,table tr th, table tr td { border:1px solid #0094ff; }
+    table { width: 80%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse; margin: auto;}   
+    .input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+    .input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+
+</style>
+
+
+</html>

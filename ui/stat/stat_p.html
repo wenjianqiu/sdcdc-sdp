@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+              <h3>单个总体率的假设检验</h3>
+        <hr style="  border-top: 2px dotted  #8c8b8b;" width="90%"/><br>
+
+        <div class="div2" style="text-align: left; margin-left: 10%;">
+            <p style="color: red;font-size: large;font-weight: bold;">第一种：正态近似法</p>
+            <p>当n足够大，p和1-p均不太小时（np或n（1-p）均大于5），样本率p近似正态分布。</p>
+                <span>一、样本量：</span> <input type="text" class="input" id="n"><p></p>
+                <span>二、阳性观测值：</span> <input type="text"  class="input" id="x"><p></p>       
+                <span>三、总体率：</span> <input type="text"  class="input" id="allp"><p></p>       
+                      
+        </div>  
+        <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button>
+
+       
+        <div style="margin-left: 5%;margin-top: 8px;">
+            
+            <table id="result">
+                <tr>
+                    <th>总体率%</th>
+                    <th>样本量</th>
+                    <th>观测值</th>
+                    <th>样本率%</th>
+                    <th>u界值</th>
+                    <th>P值</th>
+                    
+                </tr>
+          
+                <tr>                    
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                     
+                </tr>
+ 
+            </table>
+            <p>比较的是单侧p值；在p值有统计学意义时，比较样本率和总体率。</p>
+        </div>
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        <div class="div2" style="text-align: left; margin-left: 10%;">
+            <p style="color: red;font-size: large;font-weight: bold;">第二种：直接计算概率法</p>
+            <p>当n，p不符合上面的要求时，当n<=50,特别是p趋近于0或者1时，样本资料呈二项分布。</p>
+            <p>比如求试验例数小于等于1的公式：P(x<=1)=P(x=0)+P(x=1)</p>
+                <span>一、样本量：</span> <input type="text" class="input" id="n1"><p></p>
+                <span>二、阳性观测值：</span> <input type="text"  class="input" id="k"><p></p>
+                <span>三、总体率：</span> <input type="text"  class="input" id="allp1"><p></p>             
+                      
+        </div>
+        <button class="login-button" style="margin-top: 20px;" onclick="compute1()">计算</button>
+       
+        <div style="margin-left: 5%;margin-top: 8px;">
+            
+            <table id="result1">
+                <tr>
+                    <th>总体率%</th>
+                    <th>样本量</th>
+                    <th>观测值</th>
+                    <th>样本率%</th>
+                    <th><=k P值</th>
+                    <th>>=k P值</th>
+                    
+                </tr>
+          
+                <tr>                    
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                              
+                    <td></td>                              
+                </tr>
+            </table>
+            <p>p值结果表示X小于等于观测值的几率；小于0.05，说明小概率事件，说明试验的率不等于总体率；小于总体率</p>
+    </div>
+</body>
+
+<script>
+
+    //执行计算
+    function compute(){
+        //获取数据
+        var n=document.getElementById('n').value*1
+        var x=document.getElementById('x').value*1
+        var allp=document.getElementById('allp').value*1
+        var p=x/n
+        var Sp=Math.sqrt(allp*(1-allp)/n)
+        if(x>5 && (n-x)>5 && n>50){
+            alert("符合正态近似条件!")
+        }else{
+            alert("不符合正态近似条件!")
+        }
+        var allpp=allp*100
+        var pp=p*100
+        var u=Math.abs(p-allp)/Sp
+        var pvalue=1-wps.Application.ExecuteExcel4Macro("NORMSDIST("+u+")")
+        
+       //将结果显示到表格中
+       var table=document.getElementById("result")
+       table.rows[1].cells[0].innerHTML=allpp.toFixed(3) 
+       table.rows[1].cells[1].innerHTML=n
+       table.rows[1].cells[2].innerHTML=x      
+       table.rows[1].cells[3].innerHTML=pp.toFixed(3)        
+       table.rows[1].cells[4].innerHTML=u.toFixed(3)       
+       table.rows[1].cells[5].innerHTML=pvalue.toFixed(3)
+      
+ 
+    
+    }
+    function compute1(){
+        //获取数据
+        var n=document.getElementById('n1').value*1
+        var k=document.getElementById('k').value*1
+        var allp=document.getElementById('allp1').value*1
+        var p=k/n
+        var X=k-1
+        var pvalue=wps.Application.ExecuteExcel4Macro("BINOMDIST("+k+","+n+","+allp+","+"TRUE)")
+        var pvalue1=1-wps.Application.ExecuteExcel4Macro("BINOMDIST("+X+","+n+","+allp+","+"TRUE)")
+        var allpp=allp*100
+        var pp=p*100
+        // alert(pvalue)
+
+       //将结果显示到表格中
+       var table=document.getElementById("result1")
+       table.rows[1].cells[0].innerHTML=allpp.toFixed(3) 
+       table.rows[1].cells[1].innerHTML=n
+       table.rows[1].cells[2].innerHTML=k   
+       table.rows[1].cells[3].innerHTML=pp.toFixed(3)
+       table.rows[1].cells[4].innerHTML=pvalue.toFixed(5)
+       table.rows[1].cells[5].innerHTML=pvalue1.toFixed(5)
+    
+    }
+
+
+</script>
+
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+
+    table,table tr th, table tr td { border:1px solid #0094ff; }
+    table { width: 80%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse; margin: auto;}   
+
+    .input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+    .input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+</style>
+
+
+</html>

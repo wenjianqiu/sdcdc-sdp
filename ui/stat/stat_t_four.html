@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+              <h2>成组设计的两样本几何均数比较</h2>
+        <hr style="  border-top: 3px dotted  #8c8b8b;" width="90%"/><br>
+
+        <div class="div2">
+            <p style="margin: auto;">请选择数据区域：</p>
+            <div class="div1">            
+                <input id="input1" type="text" style='border-left: 0px; border-top: 0px; border-right: 0px; border-bottom: 1px; width: 172px;;height: 25px;'>
+                <button id="select1" onclick="select1()" type="button" value=" "
+                    style="width: 27px; height: 27px; border: 1; background: none; border: none; float: right;background-image:url(./images/select.svg)">
+                </button>     
+            </div>
+            <p> <span style="color: red;">数据格式要求：</span> 三列原始数据，第一列为血清滴度；第二三列为两组观察值；数据区域均需包含题目。</p>
+        </div>  
+        <!-- <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button> -->
+
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        <div style="margin-left: 5%;">
+            <table id="result">
+                <tr><th>组别</th> <th>n</th><th>几何均数</th><th>标准差</th><th>x±s</th><th>t值</th><th>P值</th></tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                
+                </tr>
+            </table>
+
+        </div>
+        <p>示例数据：</p> 
+        <img src="./images/four.png" alt=""> 
+      
+    </div>
+</body>
+
+<script>
+    function select1(){
+        var str=wps.Application.InputBox("请选择你要输入的单元格：", undefined, undefined, undefined, undefined, undefined, undefined, 8)
+        window.document.getElementById("input1").value=str.Address()
+        var arr=str.Value2
+        for (var i = 1; i < arr.length; i++) {
+           arr[i][0]=Math.log10(arr[i][0])            
+        }
+        var group1=[]
+        var group2=[]
+        for (var i = 1; i < arr.length; i++) {
+            for(var j=0;j<arr[i][1];j++){
+                group1.push(arr[i][0])
+            }        
+        }
+        for (var i = 1; i < arr.length; i++) {
+            for(var j=0;j<arr[i][2];j++){
+                group2.push(arr[i][0])
+            }        
+        }
+       var g1=liststat(group1)
+       var g2=liststat(group2)
+       var n1=g1[0] 
+       var n2=g2[0] 
+       var x1=g1[2] 
+       var x2=g2[2] 
+       var s1=g1[3]
+       var s2=g2[3]
+       
+       var tvalue=(x1-x2)/Math.sqrt((s1*s1*(n1-1)+s2*s2*(n2-1))/(n1+n2-2)*(1/n1+1/n2))
+       var freedom=n1+n2-2      
+       var pvalue=wps.Application.ExecuteExcel4Macro("TDIST("+tvalue+","+freedom+",2)")
+      
+       //将结果显示到表格中
+       var table=document.getElementById("result")
+       table.rows[1].cells[0].innerHTML=arr[0][1]
+       table.rows[2].cells[0].innerHTML=arr[0][2]
+       table.rows[1].cells[1].innerHTML=n1
+       table.rows[2].cells[1].innerHTML=n2
+       table.rows[1].cells[2].innerHTML=x1.toFixed(4);
+       table.rows[2].cells[2].innerHTML=x2.toFixed(4);
+       table.rows[1].cells[3].innerHTML=s1.toFixed(4);
+       table.rows[2].cells[3].innerHTML=s2.toFixed(4);
+       table.rows[1].cells[4].innerHTML=x1.toFixed(4)+"±"+s1.toFixed(4);
+       table.rows[2].cells[4].innerHTML=x2.toFixed(4)+"±"+s2.toFixed(4);
+       table.rows[1].cells[5].innerHTML=tvalue.toFixed(4);
+       table.rows[1].cells[6].innerHTML=pvalue.toFixed(4);
+    
+    }
+    //求list的样本量 均数和标准差
+    function liststat(mylist){
+        var n=mylist.length
+        var sum=mylist.reduce((a,b)=>a+b)
+        var mean=sum/n
+        var std=Math.sqrt( mylist.map(a=>{return (a-mean)*(a-mean)}).reduce((a,b)=>a+b)/(n-1))
+        var result=new Array(n,sum,mean,std)
+        return result
+    }
+
+
+
+</script>
+
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+    .div1 {
+	/*添加背景图*/
+	/* background-image: url(images/1.svg); */
+	/*定义画的格子大小*/
+	width: 200px;
+	height: 27px;
+	text-align: center;
+	border: 2px solid #429eaa;
+    margin: auto;
+}
+    table,table tr th, table tr td { border:1px solid #0094ff; }
+    table { width: 80%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse; margin: auto;}   
+
+
+</style>
+
+
+</html>

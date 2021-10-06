@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+         
+
+        <div class="div2" style="text-align: left; width: 90%;">
+            <h3 style="text-align: center;color: red;">一、两样本率比较的检验效能计算</h3>
+            <p style="color: red;">参数说明：</p>
+            <p>一般原则规定检验水准α=0.05；要求的检验效能越高，样本量越大，通常我们令II型错误β=0.2，此时检验效能为
+                1-β=0.80。有时也令β=0.1或者β=0.25；试验设计时，检验效能一般不宜低于0.75。</br>
+            </p>          
+            
+            <hr width="100%"/>
+            <p>
+                <span style="color: red;font-weight: bolder;">一、检验水准α：</span> <input type="text" class="input" id="a" placeholder="0.05" value="0.05"><p></p> 
+                <span style="color: red;font-weight: bolder;">二、组1的样本量 n1:</span> <input type="text"  class="input" id="n1">  <p></p>      
+                <span style="color: red;font-weight: bolder;">三、组1的率 p1:</span> <input type="text"  class="input" id="p1">  <p></p>      
+                <span style="color: red;font-weight: bolder;">四、组2的样本量 n2:</span> <input type="text"  class="input" id="n2">   <p></p>   
+                <span style="color: red;font-weight: bolder;">五、组2的率 p2:</span> <input type="text"  class="input" id="p2">   <p></p>   
+                <span style="color: red;font-weight: bolder;">六、有效率差:</span> <input type="text"  class="input" id="d">   <p></p>   
+               
+            </p>
+              
+            <p style="color: rgb(15, 235, 114);font-size: large;">计算可得，检验效能： <span id="result" style="color: red;font-size: larger;"></span> </p>
+        </div>  
+        <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button>
+        <div style="text-align: left;margin-left: 5%;">  
+            <p style="color: rgb(32, 18, 156);">示例：组1共17例，感染率为88.2%，组2共27例，感染率为70.3%，；认为二者相差0.30以上才有意义，
+                规定单侧检验水准α=0.05，求检验效能？
+            </p>                    
+            <p>经过计算可得U<sub>β</sub>=0.3863; 继而β=0.3496；检验效能为1-β=0.6504< 0.75 ；故检验效能不够充分。 </p>
+            
+        </div>
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        
+        <div class="div2" style="text-align: left; width: 90%;">
+            <h3 style="text-align: center;color: red;">二、两样本均数比较的检验效能计算</h3>
+            <p style="color: red;">参数说明：</p>
+            <p>一般原则规定检验水准α=0.05；要求的检验效能越高，样本量越大，通常我们令II型错误β=0.2，此时检验效能为
+                1-β=0.80。有时也令β=0.1或者β=0.25；试验设计时，检验效能一般不宜低于0.75。</br>
+            </p>          
+            
+            <hr>
+            <p>
+                <span style="color: red;font-weight: bolder;">一、检验水准α：</span> <input type="text" class="input" id="xa" placeholder="0.05" value="0.05"><p></p> 
+                <span style="color: red;font-weight: bolder;">二、组1的样本量 n1:</span> <input type="text"  class="input" id="x1">  <p></p> 
+                <span style="color: red;font-weight: bolder;">三、组2的样本量 n2:</span> <input type="text"  class="input" id="x2">   <p></p>  
+                <span style="color: red;font-weight: bolder;">四、总体标准差:</span> <input type="text"  class="input" id="delta">   <p></p>  
+                <span style="color: red;font-weight: bolder;">五、有效均数差:</span> <input type="text"  class="input" id="xd">   <p></p>   
+               
+            </p>
+              
+            <p style="color: rgb(13, 228, 84);font-size: large;">计算可得，检验效能： <span id="result1" style="color: red;font-size: larger;"></span> </p>
+        </div>  
+        <button class="login-button" style="margin-top: 20px;" onclick="compute1()">计算</button>
+      
+    </div>
+</body>
+
+<script>
+
+    //执行计算
+    function compute(){
+        //获取数据
+        var a=document.getElementById('a').value*0.5       
+        var n1=document.getElementById('n1').value*1
+        var p1=document.getElementById('p1').value*1
+        var n2=document.getElementById('n2').value*1
+        var p2=document.getElementById('p2').value*1
+        var d=document.getElementById('d').value*1
+
+        var ua=Math.abs(wps.Application.ExecuteExcel4Macro("NORMSINV("+a+")"))    
+        var pp=(n1*p1+n2*p2)/(n1+n2)
+        var ub1=d-ua*Math.sqrt(pp*(1-pp)*(1/n1+1/n2))
+        var ub2=Math.sqrt(p1*(1-p1)/n1+p2*(1-p2)/n2)
+        var ub=ub1/ub2
+       
+        var power=wps.Application.ExecuteExcel4Macro("NORMDIST("+ub+",0,1,TRUE)")
+        var b=1-power
+        document.getElementById("result").innerHTML="Power="+power.toFixed(4)+"; U<sub>β</sub>="+ub.toFixed(4)+"; β="+b.toFixed(4)
+   
+    }
+    //执行计算
+    function compute1(){
+        //获取数据
+        var a=document.getElementById('xa').value*0.5       
+        var n1=document.getElementById('x1').value*1       
+        var n2=document.getElementById('x2').value*1
+        var delta=document.getElementById('delta').value*1      
+        var d=document.getElementById('xd').value*1
+
+        var ua=Math.abs(wps.Application.ExecuteExcel4Macro("NORMSINV("+a+")"))    
+        var ub=d/(delta* Math.sqrt(1/n1+1/n2))-ua       
+        var power=wps.Application.ExecuteExcel4Macro("NORMDIST("+ub+",0,1,TRUE)")
+        alert(power)
+        var b=1-power
+        document.getElementById("result1").innerHTML="Power="+power.toFixed(4)+"; U<sub>β</sub>="+ub.toFixed(4)+"; β="+b.toFixed(4)
+   
+    }
+
+</script>
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+
+    table,table tr th, table tr td { border:1px solid #0094ff; }
+    table { width: 80%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse; margin: auto;}   
+
+    .input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+    .input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+</style>
+
+
+</html>

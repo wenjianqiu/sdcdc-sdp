@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src="../js/util.js"></script>
+<script type="text/javascript" src="../.debugTemp/wpsjsrpcsdk.js"></script>
+<body style="height: 500px; background-color: rgb(250, 250, 250);">
+    <!-- 头部样式 -->
+    <div class="top">    
+            <p style="font-weight: bold;font-size: larger; padding: 8px;">标记两个区域中的不同数据</p>       
+    </div>
+    <!-- 侧栏样式 -->
+    <div class="left">
+        <p style="margin: 5px; background: rgb(209, 223, 220); font-weight: bold;">两区域</p>
+    </div>
+    <!-- 内容样式 -->
+    <div class="main">      
+        <div class="div2" style="margin-top: 5%;">           
+            <p style="text-align: left; margin-left: 15%;">区域一：</p>
+            <div class="div1">            
+                <input id="input1" type="text" style='border-left: 0px; border-top: 0px; border-right: 0px; border-bottom: 1px; width: 172px;;height: 25px;'>
+                <button id="select1" onclick="select1()" type="button" value=" "
+                    style="width: 27px; height: 27px; border: 1; background: none; border: none; float: right;background-image:url(../images/select.svg)">
+                </button>     
+            </div>
+        </div>  
+        <div class="div2">           
+            <p style="text-align: left; margin-left: 15%;">区域二：</p>
+            <div class="div1">            
+                <input id="input2" type="text" style='border-left: 0px; border-top: 0px; border-right: 0px; border-bottom: 1px; width: 172px;;height: 25px;'>
+                <button id="select2" onclick="select2()" type="button" value=" "
+                    style="width: 27px; height: 27px; border: 1; background: none; border: none; float: right;background-image:url(../images/select.svg)">
+                </button>     
+            </div>
+        </div>
+        <div class="div2">           
+            <p style="text-align: left; margin-left: 15%;">标记颜色选择：</p>   
+                <select id='mycolor' style="width: 15%;height:30px; text-align: center;">                    
+                    <option value ="0">黄色</option>
+                    <!-- <option value ="1">红色</option>
+                    <option value ="2">橙色</option>
+                    <option value ="3">绿色</option>                    -->
+                </select>
+            
+                            
+        </div>
+        <!-- <div class="div2" style="text-align: left;">            
+            <input id="hastitle" type="checkbox" style="text-align: left;margin-left: 15%;"> <span onclick="hastitle()">数据包含标题</span> 
+        </div> -->
+        <div style="margin-top: 10%;">
+            <button class="btn" onclick="compare()">确认</button>
+            <button class="btn btn1" onclick="cancel()" ">取消</button>
+        </div>
+
+    </div>
+    <!-- 底部样式 -->
+    <div class="right">
+        <img src="../gif/rangematchcomment.png" alt="" style="width: 100%;height: 100%;">
+    </div>
+</body>
+
+<style>
+  *{
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      font-family: Microsoft YaHei; /* 设置字体 */
+      
+  }
+  .top{
+      width: 100%;
+      height: 8%;
+      background-color: rgb(233, 225, 225);
+
+  }
+  .left{
+      margin-top: 2px;
+      width: 10%;
+      height: 92%;
+      background-color: rgba(214, 216, 211, 0.849);
+      float:left;
+  }
+  .main{
+        margin-top: 2px;
+        margin-left: 0.5%;
+        width: 60%;
+        height: 92%;
+        background-color: rgba(226, 226, 215, 0.973);
+        float: left;
+  }
+  .right{
+      margin-top: 2px;
+      margin-left: 0.5%;
+      width: 29%;
+      height: 92%;
+      background-color: rgba(179, 184, 175, 0.699);     
+      float: left;
+  }
+  .div2{
+        margin:auto;
+        margin-top: 10px;
+    }
+    .div1 {
+	/*添加背景图*/
+	/* background-image: url(images/1.svg); */
+	/*定义画的格子大小*/
+	width: 200px;
+	height: 27px;
+	text-align: center;
+	border: 2px solid #429eaa;
+    margin: auto;
+}
+.btn { /* 按钮美化 */
+	width: 100px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+.btn:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+.btn1{
+    margin-left: 30px;
+    background: rgb(121, 118, 118);
+}
+.btn1:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #7d8592;
+}
+</style>
+
+<script>
+function select1(){
+    let str=wps.Application.InputBox("请选择你要输入的单元格：", undefined, undefined, undefined, undefined, undefined, undefined, 8)
+    window.document.getElementById("input1").value=str.Address() 
+}
+function select2(){
+    let str=wps.Application.InputBox("请选择你要输入的单元格：", undefined, undefined, undefined, undefined, undefined, undefined, 8)
+    window.document.getElementById("input2").value=str.Address() 
+}
+function compare(){
+    var address1=window.document.getElementById("input1").value
+    var address2=window.document.getElementById("input2").value
+    // var colorsel=window.document.getElementById("mycolor").value
+    // var hastitle=window.document.getElementById("hastitle").checked
+  
+    var arr1=wps.Application.Range(address1).Formula
+    var arr2=wps.Application.Range(address2).Formula
+    for(var i=0;i<arr1.length;i++){
+        if(!arrayHasElement(arr2,arr1[i])){
+            wps.Application.Range(address1).Rows.Item(i+1).Interior.Color=65535
+        }
+    };
+    for(var i=0;i<arr2.length;i++){
+        if(!arrayHasElement(arr1,arr2[i])){
+            wps.Application.Range(address2).Rows.Item(i+1).Interior.Color=65535
+        }
+    };
+
+
+}
+//取消，退出页面
+function cancel(){
+    window.close()
+}
+
+// 判断二维数组array中是否存在一维数组element
+var arrayHasElement = function(array, element) {  
+              for (var el of array) {
+                if (el.length === element.length) {
+                  for (var index in el) {
+                    if (el[index] !== element[index]) {
+                      break;
+                    }
+                    if (index == (el.length - 1)) {    // 到最后一个元素都没有出现不相等，就说明这两个数组相等。
+                      return true;
+                    }
+                  }
+                }
+              }
+              return false;
+}
+function hastitle(){
+    window.document.getElementById("hastitle").checked=!window.document.getElementById("hastitle").checked
+}
+
+</script>
+</html>

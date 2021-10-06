@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src="../js/util.js"></script>
+<script type="text/javascript" src="../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <div class="global" style="text-align: center;">
+              
+        <hr>
+        <div class="div2">
+            <p style="text-align: left;">请选择四格表区域：</p>
+            <div class="div1">            
+                <input id="input1" type="text" style='border-left: 0px; border-top: 0px; border-right: 0px; border-bottom: 1px; width: 172px;;height: 25px;'>
+                <button id="select1" onclick="select1()" type="button" value=" "
+                    style="width: 27px; height: 27px; border: 1; background: none; border: none; float: right;background-image:url(../images/select.svg)">
+                </button>     
+            </div>
+        </div>  
+        <hr>
+        <p style="text-align: left;">选择完四格表后，将在表格中直接显示卡方检验结果；</p>
+        <p style="color: red;text-align: left;">注意：仅适用于四格表卡方检验。</p>
+        <!-- <button class="login-button" onclick="compute()">计算卡方值</button> -->
+        <div style="margin-left: 5%;margin-top: 8px;">
+            
+            <table id="result">
+                <tr>
+                    <th>分组</th>
+                    <th>暴露</th>
+                    <th>非暴露</th>
+                    <th>卡方值</th>
+                    <th>P值</th>
+                    <th>OR值</th>
+                    <th>Lower</th>
+                    <th>Upper</th>
+                    
+                </tr>
+          
+                <tr>                    
+                    <td>病例</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                     
+                    <td></td>                     
+                    <td></td>                     
+                </tr>
+                <tr>                    
+                    <td>对照</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                     
+                    <td></td>                     
+                </tr>
+ 
+            </table>
+          
+        </div>
+    </div>
+</body>
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+    .div1 {
+	/*添加背景图*/
+	/* background-image: url(images/1.svg); */
+	/*定义画的格子大小*/
+	width: 200px;
+	height: 27px;
+	text-align: center;
+	border: 2px solid #429eaa;
+    margin: auto;
+}
+    table,table tr th, table tr td { border:1px solid #0094ff; }
+    table { width: 80%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse; margin: auto;}   
+
+</style>
+
+<script>
+    function select1(){
+    let str=wps.Application.InputBox("请选择你要输入的单元格：", undefined, undefined, undefined, undefined, undefined, undefined, 8)
+    window.document.getElementById("input1").value=str.Address()
+    var x=str.Row
+    var y=str.Column
+    var a=str.Cells.Item(1).Value2
+    var b=str.Cells.Item(2).Value2
+    var c=str.Cells.Item(3).Value2
+    var d=str.Cells.Item(4).Value2
+    let sht=wps.Application.ActiveSheet.Cells
+    sht.Item(x,y+2).Formula=a+b
+    sht.Item(x+1,y+2).Formula=c+d
+    sht.Item(x+2,y).Formula=a+c
+    sht.Item(x+2,y+1).Formula=b+d
+    sht.Item(x+2,y+2).Formula=a+b+c+d
+    sht.Item(x-1,y+3).Formula="χ2"
+    sht.Item(x-1,y+4).Formula="P"
+    wps.Application.ActiveSheet.Range(sht.Item(x-1,y-1),sht.Item(x+2,y+4)).Select()
+    var rng=wps.Application.Selection.Rows
+    rng.Borders.Value=0;
+    rng.Item(1).Borders.Item(3).Weight=4
+    rng.Item(1).Borders.Item(4).Weight=2
+    rng.Item(rng.Count).Borders.Item(4).Weight=4
+    rng.Font.Name="宋体"
+    rng.Font.Name="Times New Roman"
+    rng.Font.Size=11
+    rng.HorizontalAlignment=3
+    rng.VerticalAlignment=2
+    wps.Application.ActiveSheet.Range(sht.Item(x,y+3),sht.Item(x+2,y+3)).Merge()
+    wps.Application.ActiveSheet.Range(sht.Item(x,y+4),sht.Item(x+2,y+4)).Merge()
+   
+ 
+    var n=a+b+c+d
+    var aa=(a+b)*(a+c)/n
+    var bb=(a+b)*(b+d)/n
+    var cc=(c+d)*(a+c)/n
+    var dd=(b+d)*(c+d)/n
+    var aaa=Math.abs(a-aa)
+    var bbb=Math.abs(a-aa)
+    var ccc=Math.abs(a-aa)
+    var ddd=Math.abs(a-aa)
+    if(n<40|aa<1|bb<1|cc<1|dd<1){
+      var kk="fisher确切概率"
+      var p=fishertest(a,b,c,d,n)
+    }else if(aa<5|bb<5|cc<5|dd<5){    
+      var kk=(aaa-0.5)(aaa-0.5)/aa+(bbb-0.5)(bbb-0.5)/bb+(ccc-0.5)(ccc-0.5)/cc+(ddd-0.5)(ddd-0.5)/dd
+      var pstr="CHIDIST("+kk+",1)"
+      var p=wps.Application.ExecuteExcel4Macro(pstr)
+    }else{
+      var kk=aaa*aaa/aa+bbb*bbb/bb+ccc*ccc/cc+ddd*ddd/dd
+      var pstr="CHIDIST("+kk+",1)"
+      var p=wps.Application.ExecuteExcel4Macro(pstr)
+    }
+    sht.Item(x,y+3).Formula=kk
+    sht.Item(x,y+4).Formula=p
+    // alert("ok")
+    // window.close()
+    var OR=a*d/b/c   
+    var OR_lower=Math.exp(Math.log(OR)-1.96*Math.sqrt(1/a+1/b+1/c+1/d))
+    var OR_upper=Math.exp(Math.log(OR)+1.96*Math.sqrt(1/a+1/b+1/c+1/d))
+    //将结果显示到表格中
+    var table=document.getElementById("result")       
+    table.rows[1].cells[1].innerHTML=a
+    table.rows[1].cells[2].innerHTML=b    
+    table.rows[2].cells[1].innerHTML=c     
+    table.rows[2].cells[2].innerHTML=d     
+    table.rows[1].cells[5].innerHTML=OR.toFixed(4)
+    table.rows[1].cells[6].innerHTML=OR_lower.toFixed(4)
+    table.rows[1].cells[7].innerHTML=OR_upper.toFixed(4)
+    table.rows[1].cells[4].innerHTML=p.toFixed(4)
+    table.rows[1].cells[3].innerHTML=kk.toFixed(4)
+
+
+
+}
+</script>
+</html>

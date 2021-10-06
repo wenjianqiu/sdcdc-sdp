@@ -1,0 +1,12 @@
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="26" width="26" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <text stroke="#884D58" transform="matrix(1.8528373272018968,0,0,0.48475471341346577,-6.605299579064158,9.778051995981167) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_3" y="2.560028" x="6.376783" fill-opacity="null" stroke-opacity="null" stroke-width="0" fill="#ff0000">t</text>
+  <text font-weight="bold" stroke="#ff0000" transform="matrix(0.285738627444413,0,0,0.29974504588669004,21.2746744633154,18.618808294020194) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_4" y="6.973273" x="-69.806631" stroke-width="0" fill="#000000">Paired</text>
+ </g>
+</svg>

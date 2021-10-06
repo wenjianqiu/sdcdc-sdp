@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+         
+
+        <div class="div2" style="text-align: left; width: 90%;">
+            <h3 style="text-align: center;color: red;">一、单纯随机抽样-估计总体均数</h3>
+            <p style="color: red;">参数说明：</p>
+            <p>估计总体均数时，一般使用公式：n=(U<sub>α</sub>*σ/δ)<sup>2</sup> <br>
+                该公式为估计无限总体时的样本量估计；调查研究以有限总体多见，因此需要将n代入公式进行校正<br>
+                N<sub>c</sub>=n/(1+n/N) ;  若n/N很小，小于0.05，则可以省略校正。
+            </p>          
+            
+            <hr width="100%"/>
+            <p>
+                <span style="color: red;font-weight: bolder;">一、检验水准α：</span> <input type="text" class="input" id="a" placeholder="0.05" value="0.05"><p></p> 
+                <span style="color: red;font-weight: bolder;">二、标准差:</span> <input type="text"  class="input" id="std">  :可以查文献或预调查获得大致数值。<p></p> 
+                <span style="color: red;font-weight: bolder;">三、容许误差:</span> <input type="text"  class="input" id="delta"> :可以接受的误差范围。  <p></p>   
+                <span style="color: red;font-weight: bolder;">四、研究群体总数N:</span> <input type="text"  class="input" id="N">   <p></p>   
+               
+            </p>
+              
+            <p style="color: rgb(15, 235, 114);font-size: large;">计算可得： <span id="result" style="color: red;font-size: larger;"></span> </p>
+        </div>  
+        <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button>
+        <div style="text-align: left;margin-left: 5%;">  
+            <p style="color: rgb(32, 18, 156);">示例：调查某社区成年男子血红蛋白平均水平，共3000人，希望误差低于2g/L，根据文献，血红蛋白标准差约为25g/L，
+                规定检验水准α=0.05，需要调查多少成年男子？
+            </p>                    
+            <p>经过计算可得n=600；进行校正后，可得需要调查人数为N<sub>c</sub>=500人。 </p>
+            
+        </div>
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        
+        <div class="div2" style="text-align: left; width: 90%;">
+            <h3 style="text-align: center;color: red;">二、估计总体率的样本含量</h3>
+            <p style="color: red;">参数说明：</p>
+            <p>估计总体率时，一般使用公式：n=U<sub>α</sub><sup>2</sup>*π(1-π)/δ<sup>2</sup> <br>
+                该公式为估计无限总体时的样本量估计；调查研究以有限总体多见，因此需要将n代入公式进行校正<br>
+                N<sub>c</sub>=n/(1+(n-1)N)≈n/(1+n/N) ;  π为总体率，若估计的π有个范围，应该取最靠近50%的那个值。
+            </p>          
+            
+            <hr>
+            <p>
+                <span style="color: red;font-weight: bolder;">一、检验水准α：</span> <input type="text" class="input" id="pa" placeholder="0.05" value="0.05"><p></p> 
+                <span style="color: red;font-weight: bolder;">二、总体率π:</span> <input type="text"  class="input" id="pi">  :可以查文献或预调查获得大致数值。<p></p> 
+                <span style="color: red;font-weight: bolder;">三、容许误差δ:</span> <input type="text"  class="input" id="delta1"> :可以接受的误差范围。  <p></p>   
+                <span style="color: red;font-weight: bolder;">四、研究群体总数N:</span> <input type="text"  class="input" id="total">   <p></p>   
+               
+            </p>
+              
+            <p style="color: rgb(13, 228, 84);font-size: large;">计算可得： <span id="result1" style="color: red;font-size: larger;"></span> </p>
+        </div>  
+        <button class="login-button" style="margin-top: 20px;" onclick="compute1()">计算</button>
+
+        <div style="text-align: left;margin-left: 5%;">  
+            <p style="color: rgb(32, 18, 156);">示例：糖尿病患病率2%~3%，现在想了解某3000人社区糖尿病患病率，希望误差不超过1%，取α=0.05，需要调查多少人？<br>
+                即π=0.03；δ=0.01； N=3000；U<sub>0.05</sub>=1.96。
+            </p>                    
+            <p>经过计算可得n=1118；进行校正后，可得需要调查人数为N<sub>c</sub>=814人。 </p>
+            
+        </div>
+    </div>
+</body>
+
+<script>
+
+    //执行计算
+    function compute(){
+        //获取数据
+        var a=document.getElementById('a').value*0.5       
+        var std=document.getElementById('std').value*1
+        var delta=document.getElementById('delta').value*1
+        var N=document.getElementById('N').value*1      
+
+        var ua=Math.abs(wps.Application.ExecuteExcel4Macro("NORMSINV("+a+")"))    
+        var n=(ua*std/delta)*(ua*std/delta)
+        
+        var nc=n/(1+n/N)         
+        document.getElementById("result").innerHTML="未校正前样本量n="+n.toFixed(0)+"; 校正后样本量N<sub>c</sub>="+nc.toFixed(0)
+   
+    }
+    //执行计算
+    function compute1(){
+        //获取数据
+        var a=document.getElementById('pa').value*0.5       
+        var p=document.getElementById('pi').value*1
+        var delta=document.getElementById('delta1').value*1
+        var N=document.getElementById('total').value*1      
+
+        var ua=Math.abs(wps.Application.ExecuteExcel4Macro("NORMSINV("+a+")"))    
+        var n=ua*ua*p*(1-p)/delta/delta
+             
+        var nc=n/(1+n/N)         
+        document.getElementById("result1").innerHTML="未校正前样本量n="+n.toFixed(0)+"; 校正后样本量N<sub>c</sub>="+nc.toFixed(0)
+    }
+
+</script>
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+
+    table,table tr th, table tr td { border:1px solid #0094ff; }
+    table { width: 80%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse; margin: auto;}   
+
+    .input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+    .input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+</style>
+
+
+</html>

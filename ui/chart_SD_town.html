@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src="../js/util.js"></script>
+<script type="text/javascript" src="../js/chart/echarts.min.js"></script>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../.debugTemp/wpsjsrpcsdk.js"></script>
+<body style="background-color: rgb(247, 242, 242);text-align: center;">
+    
+          <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 100%;height:700px; margin: auto;"></div>
+    <button id="btn1" onclick="labelshow()">显示县区名称</button>
+ 
+</body>
+
+<script type="text/javascript">
+var data=[]
+var max=0
+var flag=true
+var arr=wps.Application.Selection.Formula
+for(var i=1;i<arr.length;i++){
+    
+    if(max<arr[i][1]*1){
+        max=arr[i][1]*1
+    }    
+    data.push({'name':arr[i][0],'value':arr[i][1]*1})
+}
+
+var myChart = echarts.init(document.getElementById('main'));
+myChart.showLoading();
+$.get("../js/chart/geojson/SD_town.json", function (geoJson) {
+
+    myChart.hideLoading();
+
+    echarts.registerMap('SD_town', geoJson);
+
+    myChart.setOption(option = {
+        title: {
+            text: '',
+            subtext: '',
+				},
+        tooltip: {
+            trigger: 'item',
+            formatter: '{b}<br/>数值：{c}'
+        },
+        toolbox: {
+            show: false,
+            // orient: 'vertical',
+            left: 'right',
+            // top: 'center',
+            feature: {
+                dataView: {readOnly: false},
+                // restore: {},
+                // saveAsImage: {},               
+            
+                
+            }
+        },   
+        visualMap: {
+            min: 0,
+            max: max,
+            text: ['High', 'Low'],
+            realtime: false,
+            calculable: true,
+            inRange: {
+                color: ['lightskyblue', 'yellow', 'orangered']
+            }
+        },
+        series: [
+            {
+                name: '山东省发病数',
+                type: 'map',
+                mapType: 'SD_town', // 自定义扩展图表类型
+                label: {
+                    show: flag,
+                    fontSize:8,
+                },
+				data: data
+				// [
+                //     {name: '济南市', value: 20057.34},
+                //     {name: '青岛市', value: 15477.48},
+                //     {name: '淄博市', value: 31686.1},
+                //     {name: '枣庄市', value: 6992.6},
+                //     {name: '东营市', value: 44045.49},
+                //     {name: '烟台市', value: 40689.64},
+                //     {name: '潍坊市', value: 37659.78},
+                //     {name: '济宁市', value: 45180.97},
+                //     {name: '泰安市', value: 55204.26},
+                //     {name: '威海市', value: 21900.9},
+                //     {name: '日照市', value: 4918.26},
+                //     {name: '临沂市', value: 4178.01},
+                //     {name: '德州市', value: 5881.84},
+                //     {name: '聊城市', value: 2227.92},
+                //     {name: '滨州市', value: 2180.98},
+                //     {name: '菏泽市', value: 9172.94}
+
+				// ]
+				,
+             
+            }
+        ]
+    });
+});
+
+function labelshow(){
+    flag=!flag
+    var aa =document.getElementById("btn1")
+    if(flag){
+        aa.innerHTML="隐藏县区名称"
+    }else{
+        aa.innerHTML="显示县区名称"
+    }
+    myChart.setOption(option={series:{label:{show:flag}}})
+}
+
+</script>
+</html>

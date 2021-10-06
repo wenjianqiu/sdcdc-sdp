@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+              <h3>样本量计算：三、两样本率比较</h3>
+        <hr style="  border-top: 2px dotted  #8c8b8b;" width="90%"/><br>
+
+        <div class="div2" style="text-align: left; width: 90%;">
+            <p style="color: red;">参数说明：</p>
+            <p>一般原则规定检验水准α=0.05；要求的检验效能越高，样本量越大，通常我们令II型错误β=0.2，此时检验效能为
+                1-β=0.80。有时也令β=0.1或者β=0.25；试验设计时，检验效能一般不宜低于0.75。</br>
+            </p>
+            <p>有效差值δ的确定一般使用专业上认为有意义的差值代替；有人也主张用0.25倍或0.5倍的标准差作为差值；有试验目的
+                可以另行规定，如规定新药有效率要高于标准药物有效率的30%才有推广意义。
+            </p>
+            <p>
+                一般认为同样的检验效能，在两组例数相等时所需样本量较少。本部分计算只计算两组样本量相等的情况。
+            </p>
+            <hr style="  border-top: 3px double  #8c8b8b;" width="100%"/>
+            <p>
+                <span style="color: red;font-weight: bolder;">一、检验水准α：</span> <input type="text" class="input" id="a" placeholder="0.05" value="0.05">               
+                <span style="color: red;font-weight: bolder;">单/双侧：</span>  
+                <select name="" id="atype">
+                    <option value="0">双侧</option>
+                    <option value="1">单侧</option>                   
+                </select>   <p></p>      
+                <span style="color: red;font-weight: bolder;">二、组1的率 p1:</span> <input type="text"  class="input" id="p1">  <p></p>      
+                <span style="color: red;font-weight: bolder;">三、组2的率 p2:</span> <input type="text"  class="input" id="p2">   <p></p>   
+               
+                
+            </p>
+            
+                      
+        </div>  
+        <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button>
+
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        <div style="">
+            <table id="result">                
+                <tr>
+                    <th>检验效能1-β</th>
+                    <th>检验水准α</th>                    
+                    <th>组1的率</th>                                      
+                    <th>组2的率</th>                                      
+                    <th style="color: red;">总样本量N</th>                                      
+                </tr>
+                <tr>
+                    <td>95%</td>
+                    <td></td>
+                    <td></td>               
+                    <td></td>                                      
+                    <td></td>                                      
+                </tr>              
+                <tr>
+                    <td>90%</td>
+                    <td></td>
+                    <td></td>               
+                    <td></td>                                      
+                    <td></td>                                      
+                </tr>              
+                <tr>
+                    <td>85%</td>
+                    <td></td>
+                    <td></td>               
+                    <td></td>                                      
+                    <td></td>                                      
+                </tr>              
+                <tr>
+                    <td>80%</td>
+                    <td></td>
+                    <td></td>               
+                    <td></td>                                      
+                    <td></td>                                      
+                </tr>              
+                <tr>
+                    <td>75%</td>
+                    <td></td>
+                    <td></td>               
+                    <td></td>                                      
+                    <td></td>                                      
+                </tr>              
+            </table>
+        </div>
+        <div style="text-align: left;margin-left: 5%;">           
+            
+            <p style="color: rgb(32, 18, 156);">示例：鼻炎近控率为50%，某药业公司研制一制药，要求近控率需达到80%才有推广意义
+                设定两组数量相等，则合并率为65%。规定单侧检验水准α=0.05，检验效能power为0.9，β=0.10；求样本量？
+            </p>
+            <p>可知U<sub>0.05</sub> =1.64；β=0.10; U<sub>0.10</sub> =1.28；p1=0.5;p2=0.8。</p>           
+            <p>样本量相等：求得N=86 例；平均每组43例</p>
+            
+        </div>
+        
+      
+    </div>
+</body>
+
+<script>
+
+    //执行计算
+    function compute(){
+        //获取数据
+        var a=document.getElementById('a').value*0.5       
+        var atype=document.getElementById('atype').value*1
+        var p1=document.getElementById('p1').value*1
+        var p2=document.getElementById('p2').value*1
+        var pp=(p1+p2)/2
+        var ua=Math.abs(wps.Application.ExecuteExcel4Macro("NORMSINV("+a+")"))    
+        if(atype==1){
+           ua=1.64
+        } 
+        var N95=(ua+1.64)*(ua+1.64)*4*pp*(1-pp)/(p1-p2)/(p1-p2)
+        var N90=(ua+1.28)*(ua+1.28)*4*pp*(1-pp)/(p1-p2)/(p1-p2)
+        var N85=(ua+1.04)*(ua+1.04)*4*pp*(1-pp)/(p1-p2)/(p1-p2)
+        var N80=(ua+0.84)*(ua+0.84)*4*pp*(1-pp)/(p1-p2)/(p1-p2)
+        var N75=(ua+0.67)*(ua+0.67)*4*pp*(1-pp)/(p1-p2)/(p1-p2)
+        
+
+       //将结果显示到表格中
+       var table=document.getElementById("result")
+       table.rows[1].cells[1].innerHTML=a*2
+       table.rows[2].cells[1].innerHTML=a*2
+       table.rows[3].cells[1].innerHTML=a*2
+       table.rows[4].cells[1].innerHTML=a*2
+       table.rows[5].cells[1].innerHTML=a*2
+       table.rows[1].cells[2].innerHTML=p1
+       table.rows[2].cells[2].innerHTML=p1
+       table.rows[3].cells[2].innerHTML=p1
+       table.rows[4].cells[2].innerHTML=p1
+       table.rows[5].cells[2].innerHTML=p1
+       table.rows[1].cells[3].innerHTML=p2
+       table.rows[2].cells[3].innerHTML=p2
+       table.rows[3].cells[3].innerHTML=p2
+       table.rows[4].cells[3].innerHTML=p2
+       table.rows[5].cells[3].innerHTML=p2 
+       table.rows[1].cells[4].innerHTML=N95.toFixed(0)
+       table.rows[2].cells[4].innerHTML=N90.toFixed(0)
+       table.rows[3].cells[4].innerHTML=N85.toFixed(0)
+       table.rows[4].cells[4].innerHTML=N80.toFixed(0)
+       table.rows[5].cells[4].innerHTML=N75.toFixed(0)
+      
+    
+    }
+
+
+</script>
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+
+    table,table tr th, table tr td { border:1px solid #0094ff; }
+    table { width: 80%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse; margin: auto;}   
+
+    .input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+    .input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+</style>
+
+
+</html>

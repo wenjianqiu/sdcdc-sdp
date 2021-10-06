@@ -1,0 +1,23 @@
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="26" width="26" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect stroke="#849854" id="svg_1" height="22.511385" width="16.1187" y="0.879151" x="0.812801" stroke-width="1.5" fill="none"/>
+  <rect stroke="#849854" id="svg_3" height="0.027682" width="14.611851" y="13.459045" x="1.90869" stroke-width="1.5" fill="none"/>
+  <rect stroke="#849854" transform="rotate(90 11.84018325805664,12.262841224670412) " id="svg_5" height="0.027682" width="19.634677" y="12.249001" x="2.022845" stroke-width="1.5" fill="none"/>
+  <rect stroke="#849854" id="svg_6" height="0.027682" width="14.200894" y="7.249008" x="2.000014" stroke-width="1.5" fill="none"/>
+  <rect stroke="#33666C" id="svg_8" height="0.849598" width="2.05479" y="3.641707" x="2.456633" stroke-width="1.5" fill="#529D94"/>
+  <rect stroke="#849854" transform="rotate(90 6.132427215576171,12.240010261535646) " id="svg_11" height="0.027682" width="19.771663" y="12.226169" x="-3.753404" stroke-width="1.5" fill="none"/>
+  <rect stroke="#849854" id="svg_12" height="0.027682" width="14.474865" y="18.801503" x="1.726041" stroke-width="1.5" fill="none"/>
+  <rect stroke="#33666C" id="svg_16" height="1.762837" width="2.191776" y="9.25813" x="7.799092" stroke-width="1.5" fill="#529D94"/>
+  <rect stroke="#33666C" id="svg_17" height="0.849598" width="2.05479" y="15.650823" x="2.456633" stroke-width="1.5" fill="#529D94"/>
+  <path transform="rotate(179.6287841796875 19.901147842407227,11.824042320251463) " id="svg_18" d="m22.068445,11.80146l-2.1673,-9.386073l-2.1673,9.386073l1.08365,0l0,9.431237l2.167299,0l0,-9.431237l1.08365,0z" fill="#529D94"/>
+ </g>
+</svg>

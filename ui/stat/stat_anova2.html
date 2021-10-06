@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+              <h2>方差分析-随机区组设计</h2>
+        <hr style="  border-top: 3px dotted  #8c8b8b;" width="90%"/><br>
+
+        <div class="div2">
+            <p style="margin: auto;">请选择数据区域：</p>
+            <div class="div1">            
+                <input id="input1" type="text" style='border-left: 0px; border-top: 0px; border-right: 0px; border-bottom: 1px; width: 172px;;height: 25px;'>
+                <button id="select1" onclick="select1()" type="button" value=" "
+                    style="width: 27px; height: 27px; border: 1; background: none; border: none; float: right;background-image:url(./images/select.svg)">
+                </button>     
+            </div>
+            <p> <span style="color: red;">数据格式要求：</span>仅适用于三分组数据的方差分析； 成列原始数据，第一行为分组名，第一列为区组号。</p>
+        </div>  
+        <!-- <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button> -->
+
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        <div style="margin-left: 5%;">
+        <p>基本数据描述结果</p>
+        <table id="table1">
+            <tr><th>组别</th><th>n</th><th>mean</th><th>标准差</th></tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>               
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>              
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>             
+            </tr>
+         
+        </table>      
+        <p>方差分析结果</p>
+            <table id="result">
+                <tr><th>变异来源</th> <th>SS</th><th>自由度</th><th>MS</th><th>F值</th><th>P值</th></tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                                 
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                               
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                               
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                               
+                </tr>
+            </table>
+     
+        </div>
+    
+        <p>示例数据：</p> 
+        <img src="./images/anova2.png" alt=""> 
+      
+    </div>
+</body>
+
+<script>
+    function select1(){
+        var str=wps.Application.InputBox("请选择你要输入的单元格：", undefined, undefined, undefined, undefined, undefined, undefined, 8)
+        window.document.getElementById("input1").value=str.Address()
+        var arr=str.Value2       
+        var mydata=[]
+        var brr=[]
+        
+        for (var i = 1; i < arr[0].length; i++) {
+            var tmp=[]            
+            for(var j=1;j<arr.length;j++){                
+                tmp.push(arr[j][i])                
+            } 
+            mydata.push(tmp)           
+        }
+        
+        for (var i = 1; i < arr.length; i++) {
+            var tmp=arr[i].reduce((a,b)=>a+b)-arr[i][0]
+            brr.push(tmp*tmp)
+        }
+
+       var group1=liststat(mydata[0])
+       var group2=liststat(mydata[1])
+       var group3=liststat(mydata[2])
+       var n=group1[0]+group2[0]+group3[0]
+       var cc=(group1[1]+group2[1]+group3[1])*(group1[1]+group2[1]+group3[1])/n
+       var SSt=group1[2]+group2[2]+group3[2]-cc
+       var vt=n-1
+       var SSa=(group1[1]*group1[1])/group1[0]+(group2[1]*group2[1])/group2[0]+(group3[1]*group3[1])/group3[0]-cc
+       var va=arr[0].length-2
+       var SSb=brr.reduce((a,b)=>a+b)/(arr[0].length-1) -cc
+       var vb=group1[0]-1
+
+       var SSe=SSt-SSa-SSb
+       var ve=vt-va-vb
+       var MSa=SSa/va 
+       var MSb=SSb/vb
+       var MSe=SSe/ve
+       var Fa=MSa/MSe
+       var Fb=MSb/MSe
+       var pa=wps.Application.ExecuteExcel4Macro("FDIST("+Fa+","+va+","+ve+")")
+       var pb=wps.Application.ExecuteExcel4Macro("FDIST("+Fb+","+vb+","+ve+")")
+      
+       //将三组数据描述显示到表格中
+        var table1=document.getElementById("table1")
+        table1.rows[1].cells[0].innerHTML=arr[0][1]
+        table1.rows[2].cells[0].innerHTML=arr[0][2]
+        table1.rows[3].cells[0].innerHTML=arr[0][3]
+        table1.rows[1].cells[1].innerHTML=group1[0]
+        table1.rows[2].cells[1].innerHTML=group2[0]
+        table1.rows[3].cells[1].innerHTML=group3[0]
+        table1.rows[1].cells[2].innerHTML=group1[3].toFixed(3)
+        table1.rows[2].cells[2].innerHTML=group2[3].toFixed(3)
+        table1.rows[3].cells[2].innerHTML=group3[3].toFixed(3)
+        table1.rows[1].cells[3].innerHTML=group1[4].toFixed(3)
+        table1.rows[2].cells[3].innerHTML=group2[4].toFixed(3)
+        table1.rows[3].cells[3].innerHTML=group3[4].toFixed(3)
+   
+
+       //将方差分析结果显示到表格中
+       var table=document.getElementById("result")
+       table.rows[1].cells[0].innerHTML="总变异"
+       table.rows[2].cells[0].innerHTML="因素A-列"
+       table.rows[3].cells[0].innerHTML="因素B-行"
+       table.rows[4].cells[0].innerHTML="误差"
+       table.rows[1].cells[1].innerHTML=SSt.toFixed(3)
+       table.rows[2].cells[1].innerHTML=SSa.toFixed(3)
+       table.rows[3].cells[1].innerHTML=SSb.toFixed(3)
+       table.rows[4].cells[1].innerHTML=SSe.toFixed(3)
+       table.rows[1].cells[2].innerHTML=vt
+       table.rows[2].cells[2].innerHTML=va
+       table.rows[3].cells[2].innerHTML=vb
+       table.rows[4].cells[2].innerHTML=ve
+       
+       table.rows[2].cells[3].innerHTML=MSa.toFixed(3)
+       table.rows[3].cells[3].innerHTML=MSb.toFixed(3)
+       table.rows[4].cells[3].innerHTML=MSe.toFixed(3)
+
+       table.rows[2].cells[4].innerHTML=Fa.toFixed(3)
+       table.rows[3].cells[4].innerHTML=Fb.toFixed(3)
+
+       table.rows[2].cells[5].innerHTML=pa.toFixed(3)
+       table.rows[3].cells[5].innerHTML=pb.toFixed(3)
+        
+    }
+    //求list的样本量 均数和标准差
+    function liststat(mylist){
+        var n=mylist.length
+        var sum=mylist.reduce((a,b)=>a+b)
+        var sum_x2=mylist.map(a=>{return a*a}).reduce((a,b)=>a+b)
+        var mean=sum/n
+        var std=Math.sqrt( mylist.map(a=>{return (a-mean)*(a-mean)}).reduce((a,b)=>a+b)/(n-1))
+        var result=new Array(n,sum,sum_x2,mean,std)
+        return result
+    }
+
+
+
+</script>
+
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+    .div1 {
+	/*添加背景图*/
+	/* background-image: url(images/1.svg); */
+	/*定义画的格子大小*/
+	width: 200px;
+	height: 27px;
+	text-align: center;
+	border: 2px solid #429eaa;
+    margin: auto;
+}
+    table,table tr th, table tr td { border:1px solid #0094ff; }
+    table { width: 80%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse; margin: auto;}   
+
+
+</style>
+
+
+</html>

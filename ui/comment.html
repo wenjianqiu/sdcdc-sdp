@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>使用说明</title>
+    <!-- 导入JQuery库 -->
+    <script src="../js/jquery.min.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background:#a6a8aa;
+        }
+        .left-nav{
+            height: 100%;
+            background: #f9fcf8;     
+        }
+        .left-nav .right{
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            background-color: #eee;
+            position: relative;
+        }
+        .left-nav .right ul{
+            list-style: none;
+            width: 15%;
+            height: 100%;
+            background-color:rgb(213, 216, 221);
+        }
+        .left-nav .right ul li{
+            height: 26px;
+            text-align: center;
+            line-height:26px;
+            color:#636363;
+            font-size: 14px;
+            cursor:pointer;
+        }
+        .left-nav .right ul li span:hover{
+            color: red;            
+        }
+        .left-nav .right ul li .div2{
+            position:absolute;
+            left: 16%;
+            top: 0px;
+            display:none;
+            width: 84%;
+            height: 100%;
+            text-align: center;
+            box-shadow: 1px 1px 2px white;
+        }
+    </style>
+</head>
+<body>
+    <hr>
+    <div class="left-nav">
+        <div class="right">
+            <ul>
+                <li>
+                    <span>三线表</span>
+                    <div style="display: block;" class="div2">
+                        <h1 style="margin: 10px;">三线表使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            1、选择要进行格式化的区域；</br>
+                            2、点击按钮查看结果。
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/threelines.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>区号互转</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">区号互转使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            1、将选择区域的“3701”格式转换为“济南”字样；</br>
+                            2、将选择区域的“济南”格式转换为“3701”字样。
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/dishi.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>卡方检验</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">卡方检验使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            1、点击程序按钮，弹出对话框，选择四个表区域；</br>
+                            2、点击“确定”按钮，生成四个表卡方结果表格；</br>                            
+                        </p>                        
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/chisq.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>文本操作</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">文本-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            一、文本插入</br>
+                            1、选择要处理的区域；</br>
+                            2、插入按钮，填写要插入的文本以及位置。</br>
+                            二、文本截取。与left,right,mid 函数使用相同；</br>
+                            1、选择要处理的区域；</br>
+                            2、截取按钮，填写要截取的开始位置和长度。</br>
+                        </p>
+                        <p style="text-align: left;color: red;">注意：截取数据会覆盖原始数据位置；建议先复制列。</p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/text.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>填充操作</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">填充-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            一、录入123序列；录入罗马数字序列同</br>
+                            先选择要填充的区域；然后按下按钮；序列从1开始</br>
+                            二、录入abc序列。可以结合格式的切换大小写变为ABC序列</br>
+                            先选择要填充的区域；然后按下按钮；序列从a开始</br>
+                            三、空白单元格填充。</br>
+                            先选择区域；然后按下按钮；输入要填充的文本或数字；确定即可。</br>
+                            四、不连续填充。</br>
+                            先选择不连续单元格区域；确定即可；应用场景见示例。</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/fill.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>删除操作</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">删除-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            一、删除空白表</br>
+                            直接点击运行，删除该文件中的空白表；</br>
+                            二、删除空行。</br>
+                            需先选择数据区域，再运行按钮</br>
+                            三、删除前后空白；0值；</br>
+                            需先选择数据区域，再运行按钮</br>
+                            四、删除非数字：去除单元格里的非数字 如 abc23df ==》23。</br>
+                            需先选择数据区域，再运行按钮</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/delete.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>计算操作</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">计算-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            加减乘除：在原有数据的基础上进行数据运算。</br>
+                            1、选择要处理的区域；</br>
+                            2、选择按钮，输入数据，进行运算。</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/compute.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>格式操作</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">格式-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            一、大小写切换。</br>
+                            选择要处理的区域；按钮。</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/style.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>表格|多表合一</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">多表合一-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            多表合一：将打开的文件的sheet表合并到一个新文件里。</br>
+                            1、对话框选择要合并的文件；</br>
+                            2、选择按钮，会将选中文件中的所有表格合并。</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/many2one.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>表格|同格求和</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">同格求和-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            同格求和：将一个文件中多个相同sheet表中同一个位置的数据求和。</br>
+                            1、选择要进行合并求和的区域；</br>
+                            2、选择按钮，生成新表格，只显示求和的区域。</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/cells2sum.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>表格|同格汇表</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">同格汇表-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            同格汇表：将一个文件中多个相同sheet表中同一个位置的数据汇总到一个表中。</br>
+                            1、选择要进行合并汇总的区域（只能单行区域；一维）；</br>
+                            2、选择按钮，生成新表格，显示各表区域的汇总，第一列为表名。</br>
+                        </p>
+                        <p style="text-align: left;color: red;">注意：区域选择只能是一维数据框。</p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/cells2sheet.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>表格|表格复制</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">表格复制-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            表格复制：将一个sheet表复制多份。</br>
+                            1、点开要复制的sheet表模板；</br>
+                            2、选择按钮，输入要复制的数量，确定即可。</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/clone.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+                
+                <li>
+                    <span>拆分|一表拆多</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">一表拆多-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            一表拆多：将一个文件中的多个sheet表生成多个文件。</br>
+                            1、打开要拆分的sheet表；</br>
+                            2、选择按钮，确定即可，将在该文件的同一目录生成新的文件files。</br>
+                        </p>
+                        <p style="text-align: left;color: red;">建议：将需拆分的表格单独放置一个文件夹。</p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/one2many.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>拆分|字段分表</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">字段分表-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            字段分表：根据一个sheet数据中某个字段（如地市）的分类进行分表。</br>
+                            1、选中要分隔的表格区域，可以单击单元格，使用ctrl+A扩展选择；</br>
+                            2、选择按钮，输入要使用的字段在选中区域的第几列；确定即可。</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/range2sheets.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>图表|动态线图</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">动态线图-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            动态线图。</br>
+                            1、数据准备；两列数据，第一列为日期（注意格式）；第二列为数据；</br>
+                            2、选择数据区域（包含题目）；点击按钮即可。</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/linemove.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>图表|可信区间</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">可信区间-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            可信区间图。</br>
+                            1、数据准备；四列数据，第一列为x轴分组；第二列为均数或中位数；</br>
+                               第三列为可信区间下限；第四列为可信区间上限；</br>
+                            2、选择数据区域（包含题目字段名）；点击按钮即可。</br>
+                            3、根据实际数据调整y的范围；点击按钮即可刷新。</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/meanCI.gif" style="width: 100%;" alt="">
+                        </div>
+                        <hr>
+                        <p>示例数据</p>
+                        <table>
+                          <tr> <th>年龄分组</th><th>mean</th><th>lower</th>	<th>upper</th></tr>
+                           <tr><td> 1	</td> <td>70	</td> <td>62	</td> <td>74</td></tr>
+                           <tr><td> 2	</td> <td>89	</td> <td>85	</td> <td>98</td></tr>
+                           <tr><td> 3	</td> <td>78	</td> <td>74	</td> <td>84</td></tr>
+                           <tr><td> 4	</td> <td>96	</td> <td>90	</td> <td>105</td></tr>
+                           <tr><td> 5	</td> <td>56	</td> <td>50	</td> <td>61</td></tr>
+                           <tr><td> 6	</td> <td>56	</td> <td>51	</td> <td>62</td></tr>
+                           <tr><td> 7	</td> <td>40	</td> <td>35	</td> <td>47</td></tr>
+                           <tr><td> 8	</td> <td>64	</td> <td>58	</td> <td>71</td></tr>
+                           <tr><td> 9	</td> <td>65	</td> <td>58	</td> <td>74</td></tr>
+                           <tr><td> 10</td> <td>	62</td> <td>	56</td> <td>	70</td></tr>
+                           <tr><td> 11</td> <td>	55</td> <td>	51</td> <td>	65</td></tr>
+                           <tr><td> 12</td> <td>	82</td> <td>	75</td> <td>	88</td></tr>
+                           <tr><td> 13</td> <td>	93</td> <td>	89</td> <td>	101</td></tr>
+                           <tr><td> 14</td> <td>	58</td> <td>	50</td> <td>	66</td></tr>
+                           <tr><td> 15</td> <td>	46</td> <td>	41</td> <td>	53</td></tr>
+                           <tr><td> 16</td> <td>	50</td> <td>	45</td> <td>	59</td></tr>
+                           <tr><td> 17</td> <td>	78</td> <td>	74</td> <td>	87</td></tr>
+                           <tr><td> 18</td> <td>	55</td> <td>	49</td> <td>	62</td></tr>
+                           <tr><td> 19</td> <td>	50</td> <td>	45</td> <td>	57</td></tr>
+                           <tr><td> 20</td> <td>	52</td> <td>	45</td> <td>	58</td></tr>
+
+                        </table>
+                    </div>
+                </li>
+
+                <li>
+                    <span>图表|桑基图</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">桑基图-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            桑基图。</br>
+                            1、数据准备；三列数据，第一列为起点；第二列为终点；第三列为数据；</br>
+                            2、选择数据区域（包含题目）；点击按钮即可。</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/sankey.gif" style="width: 100%;" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <span>图表|山东地图</span>
+                    <div class="div2">
+                        <h1 style="margin: 10px;">山东地图-使用说明</h1><hr>
+                        <p style="text-align: left;">
+                            山东地图。</br>
+                            1、数据准备；两列数据，第一列为地区名(济南市、青岛市)；第二列为数据；</br>
+                            2、选择数据区域（包含题目）；点击按钮即可。</br>
+                        </p>
+                        <hr></br>
+                        <div class="image" >
+                            <img src="../gif/sdmap.gif" style="width: 100%;" alt="">
+                        </div>                   
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</body>
+<script>
+//鼠标移入区域时
+$('.left-nav .right ul li').mousedown(function(){
+    $(this).css({'background':'#eee'});
+    $(this).css({'color':'blue'});
+    $(this).find('div').css({'background':'#fff'}).show();//显示div
+    $('.div2').not($(this).find('div')).hide();
+    $('.left-nav .right ul li').not($(this)).css({'background':'#fff'});
+    $('.left-nav .right ul li').not($(this)).css({'color':'black'});
+});
+//鼠标移除区域时
+// $('.left-nav .right ul li').mouseleave(function(){
+//     $(this).find('div').hide();//隐藏div
+//     $(this).css({'background':'#fff'})
+// });
+</script>
+</html>

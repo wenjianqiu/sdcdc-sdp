@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src="../js/util.js"></script>
+<script type="text/javascript" src="../js/chart/echarts.min.js"></script>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../.debugTemp/wpsjsrpcsdk.js"></script>
+
+<body style="background-color: rgb(247, 242, 242);text-align: center;">
+    
+          <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 100%;height:500px; margin: auto;"></div>
+    <hr> 
+    <div style="width: 865px;height:50px;text-align: center;padding: 5px; background-color: rgb(144, 215, 218);">
+        <span>颜色选择：</span>      <select id='mycolor'>
+            <option value ="0">默认颜色</option>
+            <option value ="1">红色</option>
+            <option value ="2">蓝色</option>
+            <option value ="3">绿色</option>
+            <option value ="4">橙色</option>
+            <option value ="5">黄--红</option>
+            <option value ="6">绿--黄</option>
+            <option value ="7">绿-黄-红</option>
+        </select>
+   
+        <span>样式选择：</span><select id='mytype'>
+            <option value ="0">连续型色彩</option>
+            <option value ="1">分段型色彩</option>          
+        </select>
+        <span>分层数量：</span><select id='mynum'> 
+            <option value ="2">2个分组</option>          
+            <option value ="3">3个分组</option>          
+            <option value ="4">4个分组</option>          
+            <option value ="5">5个分组</option>          
+            <option value ="6">6个分组</option>          
+            <option value ="7">7个分组</option>          
+            <option value ="8">8个分组</option>          
+            <option value ="9">9个分组</option>          
+        </select>
+        <span>图例方向选择：</span><select id='orient'>
+            <option value ="0">垂直方向</option>
+            <option value ="1">水平方向</option>          
+        </select>
+        <input id='datashow' style="margin-left: 10px;" type="checkbox" value="1"/><label>显示数据</label>
+        
+    </div>
+    <div style="margin-top: 10px;">
+        <button onclick="resetoptions()">更新地图</button>
+        <button id="btn1" onclick="labelshow()" style="margin-left: 20px;">隐藏名称</button>
+        <button style="margin-left: 20px;" onclick="imgdownload()">地图插入表格</button>
+    </div>
+</body>
+
+<script type="text/javascript">
+
+var data=[]
+var max=0
+var flag=true
+var arr=wps.Application.Selection.Formula
+var min=arr[1][1]
+for(var i=1;i<arr.length;i++){
+    
+    if(max<arr[i][1]*1){
+        max=arr[i][1]*1
+    }
+    if(min>arr[i][1]*1){
+        min=arr[i][1]*1
+    }
+
+    data.push({'name':arr[i][0],'value':arr[i][1]*1})
+}
+
+var myChart = echarts.init(document.getElementById('main'));
+myChart.showLoading();
+$.get("../js/chart/geojson/SD.json", function (geoJson) {
+
+    myChart.hideLoading();
+
+    echarts.registerMap('SD', geoJson);
+
+    myChart.setOption(option = {
+        backgroundColor:'white',
+        title: {
+            text: '',
+            subtext: '',
+				},
+        tooltip: {
+            trigger: 'item',
+            formatter: '{b}<br/>值：{c}'
+        },
+        toolbox: {
+            show: false,
+            // orient: 'vertical',
+            left: 'right',
+            // top: 'center',
+            feature: {
+                dataView: {readOnly: false},
+                // restore: {},
+                // saveAsImage: {},               
+            
+                
+            }
+        },
+        visualMap: {
+            min: min,
+            max: max,
+            text: ['High', 'Low'],
+            realtime: false,
+            calculable: true,
+            inRange: {
+                color: ['lightskyblue', 'yellow', 'orangered']
+            },
+            right:'20%',
+            bottom:'5%',
+            inverse:true, 
+        },
+        series: [
+            {
+                name: '山东省发病数',
+                type: 'map',
+                mapType: 'SD', // 自定义扩展图表类型
+                label: {
+                    show: flag
+                },
+				data: data
+				// [
+                //     {name: '济南市', value: 20057.34},
+                //     {name: '青岛市', value: 15477.48},
+                //     {name: '淄博市', value: 31686.1},
+                //     {name: '枣庄市', value: 6992.6},
+                //     {name: '东营市', value: 44045.49},
+                //     {name: '烟台市', value: 40689.64},
+                //     {name: '潍坊市', value: 37659.78},
+                //     {name: '济宁市', value: 45180.97},
+                //     {name: '泰安市', value: 55204.26},
+                //     {name: '威海市', value: 21900.9},
+                //     {name: '日照市', value: 4918.26},
+                //     {name: '临沂市', value: 4178.01},
+                //     {name: '德州市', value: 5881.84},
+                //     {name: '聊城市', value: 2227.92},
+                //     {name: '滨州市', value: 2180.98},
+                //     {name: '菏泽市', value: 9172.94}
+
+				// ]
+				,
+             
+            }
+        ]
+    });
+});
+
+function imgdownload(){
+    var canvas= document.getElementById('main').children[0].children[0]
+    //实现图片写入本地
+    var mypath=wps.Env.GetTempPath()+"tmp.png"   
+    var reader =new FileReader()
+    reader.onload=function(){
+        wps.FileSystem.writeAsBinaryString(mypath,reader.result)
+    //利用shapes插入图片到excel中
+        var sht=wps.Application.ActiveSheet
+        sht.Shapes.AddPicture(mypath, true, true, 300, 50, 600, 400)
+        wps.FileSystem.Remove(mypath)
+    //关闭窗口
+        window.close()
+    }
+    canvas.toBlob(function(blob){
+        reader.readAsBinaryString(blob)      
+    },"image/png", 1)
+ 
+}
+//是否显示地区名称
+function labelshow(){
+    flag=!flag
+    var aa =document.getElementById("btn1")
+    if(flag){
+        aa.innerHTML="隐藏名称"
+    }else{
+        aa.innerHTML="显示名称"
+    }
+    myChart.setOption(option={series:{label:{show:flag}}})
+}
+
+
+//设置地图样式
+function resetoptions(){
+    var index1=document.getElementById('mycolor').value*1
+
+    var mycolor=[
+         ['lightskyblue', 'yellow', 'orangered'],
+         ['#ffe6e6', 'red'],      //单红
+         ['#e6ffe6', 'blue'],     //单蓝
+         ['#e6e6ff', 'green'],     //单蓝
+         ['#fff2e6', 'orange'],     //单橙色
+         ['yellow', 'red'],     //单橙色
+         ['green', 'yellow'],
+         ['green', 'yellow','red'],
+    ]
+    var index2=document.getElementById('mytype').value*1
+
+    var mytype=['continuous','piecewise']
+    var mynum=document.getElementById('mynum').value*1
+   
+    //判断是否显示数据
+    var datashow=document.getElementById('datashow')
+        var fm="{b}"
+    if(datashow.checked){
+        fm='{b}:{@value}'
+    }    
+
+    //图例方向设置
+    var orient=document.getElementById('orient').value*1
+    var orient_value='vertical'
+    if (orient==1) {
+        orient_value='horizontal'
+    }
+    //更新设置
+    myChart.setOption(option={
+
+        visualMap: {
+            type: mytype[index2],
+            //showLabel:true,
+            min: min,
+            max: max,
+            //text: ['High', 'Low'],
+            realtime: false,
+            calculable: true,
+            splitNumber: mynum,
+            inRange: {
+                color: mycolor[index1],
+            },
+            right:'20%',  
+            bottom:'5%',
+            orient:orient_value,
+            inverse:true,        
+        },
+        series:{
+            label:{show:flag,
+                formatter:fm,
+            }
+        }
+    })
+   
+   
+}
+
+</script>
+</html>

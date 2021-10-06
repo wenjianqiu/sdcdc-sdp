@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src="../js/util.js"></script>
+<script type="text/javascript" src="../js/chart/highcharts.js"></script>
+<!-- <script type="text/javascript" src="../js/chart/exporting.js"></script> -->
+<script type="text/javascript" src="../js/chart/sankey.js"></script>
+<script type="text/javascript" src="../.debugTemp/wpsjsrpcsdk.js"></script>
+<body style="background-color: gray;text-align: center;">
+    <div class="global" style="margin: auto;">
+        <div id="container" style="width:100%;height:350px"></div>
+	</div>
+	<button style="margin-left: 20px;" onclick="imgdownload()">地图插入表格</button>
+</body>
+
+<script>
+var data=[]
+var arr=wps.Application.Selection.Formula
+for(var i=1;i<arr.length;i++){
+ 
+    data.push([arr[i][0],arr[i][1],arr[i][2]*1])
+}
+
+Highcharts.chart('container', {
+	colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572',
+			 '#FF9655', '#FFF263', '#6AF9C4'],
+	title: {
+		text: ''
+	},
+	series: [{
+		keys: ['from', 'to', 'weight'],
+		data: data,
+		// [
+		// 	['疑似病例1102例','排除588例',588],
+		// 	['疑似病例1102例','确诊病例551例',514],
+		// 	['阳性检测158例','确诊病例551例',37],
+		// 	['阳性检测158例','未发病121例',121],
+		// 	['确诊病例551例','轻型69例',69],
+		// 	['确诊病例551例','普通型417例',417],
+		// 	['确诊病例551例','重症39例',39],
+		// 	['确诊病例551例','危重症26例',26],
+		// 	['轻型69例','出院544例',69],
+		// 	['普通型417例','出院544例',417],
+		// 	['重症39例','出院544例',38],
+		// 	['重症39例','死亡7例',1],
+		// 	['危重症26例','出院544例',20],
+		// 	['危重症26例','死亡7例',6],
+
+		// ],
+		type: 'sankey',
+		name: '山东省',
+		dataLabels: {  //设置标签字体大小
+			style: {color:'black',
+					fontSize:'14px',
+					outline:'none' }
+		}
+	},],
+credits: {
+		enabled: false
+	},
+});
+function imgdownload(){
+    var canvas= document.getElementById('main').children[0].children[0]
+    //实现图片写入本地
+    var mypath=wps.Env.GetRootPath()+"tmp.png"   
+    var reader =new FileReader()
+    reader.onload=function(){
+        wps.FileSystem.writeAsBinaryString(mypath,reader.result)
+    //利用shapes插入图片到excel中
+        var sht=wps.Application.ActiveSheet
+        sht.Shapes.AddPicture(mypath, true, true, 300, 50, 600, 400)
+        wps.FileSystem.Remove(mypath)
+    //关闭窗口
+        window.close()
+    }
+    canvas.toBlob(function(blob){
+        reader.readAsBinaryString(blob)      
+    },"image/png", 1)
+ 
+}
+
+</script>
+</html>

@@ -1,0 +1,26 @@
+<svg width="27" height="27" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <defs>
+  <linearGradient y2="0" x2="1" y1="0" x1="0" id="svg_12">
+   <stop offset="1" stop-color="#edf4f4"/>
+   <stop offset="1" stop-color="#120b0b"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="url(#svg_12)" id="canvas_background" height="29" width="29" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect stroke="#619E73" rx="1" id="svg_1" height="25.623547" width="25.706739" y="0.813016" x="0.64663" fill="none"/>
+  <rect id="svg_3" height="0.582353" width="24.126067" y="6.553356" x="1.228983" stroke="#619E73" fill="none"/>
+  <rect stroke="#619E73" id="svg_4" height="0.915126" width="5.906727" y="12.959243" x="1.228983" fill="none"/>
+  <rect stroke="#619E73" id="svg_5" height="0.99832" width="5.573954" y="19.864289" x="1.478563" fill="none"/>
+  <rect transform="rotate(90 8.13403034210205,13.500000000000002) " id="svg_6" height="0.582353" width="24.126067" y="13.208824" x="-3.929004" stroke="#619E73" fill="none"/>
+  <rect stroke="#619E73" transform="rotate(90 17.368526458740238,3.5999596118927015) " id="svg_7" height="0.582353" width="4.326054" y="3.308784" x="15.205499" fill="none"/>
+  <path stroke="#619E73" id="svg_8" d="m21.121892,18.839666c0.553098,-0.862404 0.877468,-1.871357 0.878044,-2.953312c-0.000576,-3.155974 -2.703268,-5.712134 -6.039143,-5.713223c-3.336451,0.00109 -6.040295,2.557249 -6.040295,5.712679c0,3.153795 2.703844,5.709955 6.040295,5.709955c1.144798,0 2.211817,-0.306717 3.123854,-0.829717l4.106755,3.882726l2.03667,-1.926926l-4.106179,-3.882181zm-5.161099,0.578568c-2.063748,-0.004358 -3.732262,-1.582073 -3.735719,-3.532425c0.003457,-1.951441 1.672546,-3.529156 3.735719,-3.533515c2.06202,0.004358 3.732262,1.582073 3.735719,3.533515c-0.004033,1.950352 -1.673699,3.528067 -3.735719,3.532425zm1.151712,-6.165945l-2.304577,0l0,1.543393l-1.632216,0l0,2.179709l1.632216,0l0,1.543393l2.304577,0l0,-1.543938l1.63164,0l0,-2.178619l-1.632216,0l0,-1.543938l0.000576,0z" fill-opacity="null" stroke-opacity="null" fill="none"/>
+ </g>
+</svg>

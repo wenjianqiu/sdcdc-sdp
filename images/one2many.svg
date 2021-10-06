@@ -1,0 +1,25 @@
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="26" width="26" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect stroke="#619E73" id="svg_32" height="7.488575" width="7.123278" y="2.066366" x="15.744287" stroke-width="0.3" fill="none"/>
+  <rect stroke="#619E73" id="svg_33" height="2.283102" width="6.712319" y="4.486454" x="15.926936" stroke-width="0.3" fill="none"/>
+  <rect stroke="#619E73" id="svg_34" height="7.031954" width="2.054791" y="2.340338" x="18.392686" stroke-width="0.3" fill="none"/>
+  <rect stroke="#619E73" id="svg_35" height="7.488575" width="7.123278" y="12.249001" x="15.744287" stroke-width="0.3" fill="none"/>
+  <rect stroke="#619E73" id="svg_36" height="2.283102" width="6.712319" y="14.669089" x="15.926936" stroke-width="0.3" fill="none"/>
+  <rect stroke="#619E73" id="svg_37" height="7.031954" width="2.054791" y="12.522973" x="18.392686" stroke-width="0.3" fill="none"/>
+  <path transform="rotate(89.56781005859375 12.825343132019043,10.983402252197264) " id="svg_38" d="m8.96251,10.978251l3.862833,-2.141218l3.862833,2.141218l-1.931417,0l0,2.151521l-3.862833,0l0,-2.151521l-1.931417,0z" stroke-width="0.3" fill="#619E73"/>
+  <rect stroke="#619E73" id="svg_39" height="13.42464" width="9.269394" y="4.166819" x="0.675815" stroke-width="0.3" fill="none"/>
+  <rect stroke="#619E73" id="svg_40" height="2.283102" width="8.767111" y="6.952204" x="0.812801" stroke-width="0.3" fill="none"/>
+  <rect stroke="#619E73" id="svg_41" height="12.968019" width="1.552509" y="4.39513" x="2.867592" stroke-width="0.3" fill="none"/>
+  <rect stroke="#619E73" id="svg_42" height="12.968019" width="1.552509" y="4.39513" x="6.063935" stroke-width="0.3" fill="none"/>
+  <rect stroke="#619E73" id="svg_43" height="2.283102" width="8.767111" y="12.066352" x="0.812801" stroke-width="0.3" fill="none"/>
+ </g>
+</svg>

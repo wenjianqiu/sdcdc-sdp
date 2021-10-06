@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+              <h2>配对设计的均数比较</h2>
+        <hr style="  border-top: 3px dotted  #8c8b8b;" width="90%"/><br>
+
+        <div class="div2">
+            <p style="margin: auto;">请选择数据区域：</p>
+            <div class="div1">            
+                <input id="input1" type="text" style='border-left: 0px; border-top: 0px; border-right: 0px; border-bottom: 1px; width: 172px;;height: 25px;'>
+                <button id="select1" onclick="select1()" type="button" value=" "
+                    style="width: 27px; height: 27px; border: 1; background: none; border: none; float: right;background-image:url(./images/select.svg)">
+                </button>     
+            </div>
+            <p>数据格式要求：两列原始数据，数据区域包含题目。</p>
+        </div>  
+
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        <div style="margin-left: 5%;">
+            <p style="text-align: left;">经计算可得，检验统计量 t : <span id="tvalue" style="color: red;font-size:large;">统计量</span></p>
+            <p style="text-align: left;">经计算可得，检验自由度 : <span id="freedom" style="color: red;font-size:large;">自由度</span></p>
+            <p style="text-align: left;">经计算可得，检验P值 : <span id="pvalue" style="color: red;font-size:large;">P值</span></p>
+            <p></p>
+
+        </div>
+        <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button>
+        <p>示例数据：</p> 
+        <img src="./images/two.png" alt=""> 
+    </div>
+</body>
+
+<script>
+    var list1=[]
+    var n
+    var sumd=0
+    var sumd2=0
+    
+    function select1(){
+        var str=wps.Application.InputBox("请选择你要输入的单元格：", undefined, undefined, undefined, undefined, undefined, undefined, 8)
+        window.document.getElementById("input1").value=str.Address()
+        var arr=str.Value2
+        for (var i = 1; i < str.Rows.Count; i++) {
+            var tmp=arr[i][0]*1-arr[i][1]*1
+            list1.push(tmp)
+            sumd+=tmp
+            sumd2+=tmp*tmp
+        }
+        n=str.Rows.Count-1
+
+    }
+
+    function compute(){      
+        var sd=Math.sqrt((sumd2-sumd*sumd/n)/(n-1))
+        var tvalue=(sumd/n)/sd*Math.sqrt(n)
+        var freedom=n-1
+        var pvalue=wps.Application.ExecuteExcel4Macro("TDIST("+tvalue+","+freedom+",2)")
+        document.getElementById("tvalue").innerHTML=tvalue.toFixed(5)
+        document.getElementById("freedom").innerHTML=n-1
+        document.getElementById("pvalue").innerHTML=pvalue.toFixed(5)
+
+
+    }
+
+
+</script>
+
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+    .div1 {
+	/*添加背景图*/
+	/* background-image: url(images/1.svg); */
+	/*定义画的格子大小*/
+	width: 200px;
+	height: 27px;
+	text-align: center;
+	border: 2px solid #429eaa;
+    margin: auto;
+}
+
+
+</style>
+
+
+</html>

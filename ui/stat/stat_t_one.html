@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src="../js/util.js"></script>
+<script type="text/javascript" src="../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+              <h2>样本均数与总体均数比较</h2>
+        <hr style="  border-top: 3px dotted  #8c8b8b;" width="90%"/><br>
+        <div class="div2" style="text-align: left;margin-left: 5%;">
+            <span>请输入样本量 n ：</span>
+            <input type="text" name="" id="sample_count"><p></p>
+            <span>请输入样本均数 X 的值：</span>
+            <input type="text" name="" id="sample_average"><p></p>
+            <span>请输入样本方差 S 的值：</span>
+            <input type="text" name="" id="sample_sd"><p></p>
+            <span>请输入总体均数 μ 的值：</span>
+            <input type="text" name="" id="all_average"><p></p>
+         
+        </div>  
+        <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        <div style="margin-left: 5%;">
+            <p style="text-align: left;">经计算可得，检验统计量 t : <span id="tvalue" style="color: red;font-size:large;">统计量</span></p>
+            <p style="text-align: left;">经计算可得，检验自由度 : <span id="freedom" style="color: red;font-size:large;">自由度</span></p>
+            <p style="text-align: left;">经计算可得，检验P值 : <span id="pvalue" style="color: red;font-size:large;">P值</span></p>
+            <p></p>
+
+        </div>
+        <button class="login-button" style="margin-top: 20px;" onclick="compute()">计算</button>
+      
+    </div>
+</body>
+
+<script>
+    function compute(){
+        var n=document.getElementById("sample_count").value*1
+        var sample_average=document.getElementById("sample_average").value*1
+        var sample_sd=document.getElementById("sample_sd").value*1
+        var all_average=document.getElementById("all_average").value*1
+        
+        var tvalue=(sample_average-all_average)/sample_sd*Math.sqrt(n)
+        var freedom=n-1
+        var pvalue=wps.Application.ExecuteExcel4Macro("TDIST("+tvalue+","+freedom+",2)")
+        document.getElementById("tvalue").innerHTML=tvalue.toFixed(5)
+        document.getElementById("freedom").innerHTML=freedom
+        document.getElementById("pvalue").innerHTML=pvalue.toFixed(5)
+
+
+    }
+
+
+</script>
+
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+    .div2{
+        margin:auto;
+    }
+    input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+    input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+
+</style>
+
+
+</html>

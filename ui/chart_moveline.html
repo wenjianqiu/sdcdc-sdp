@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src="../js/util.js"></script>
+<script type="text/javascript" src="../js/chart/highcharts.js"></script>
+<!-- <script type="text/javascript" src="../js/chart/exporting.js"></script> -->
+<script type="text/javascript" src="../.debugTemp/wpsjsrpcsdk.js"></script>
+<body style="background-color: gray;text-align: center;">
+    <div class="global" style="margin: auto;">
+        <div id="container" style="width:100%;height:350px"></div>
+    </div>
+</body>
+
+<script>
+var data=[]
+var arr=wps.Application.Selection.Formula
+for(var i=1;i<arr.length;i++){
+    var tmp=Date.UTC(1970,0,arr[i][0]- 25568)
+    data.push([tmp,arr[i][1]*1])
+}
+//参数设置
+var ytitle=arr[0][1]
+
+Highcharts.setOptions({
+	global: {
+		useUTC: false
+	}
+});
+function activeLastPointToolip(chart) {
+	var points = chart.series[0].points;
+	chart.tooltip.refresh(points[points.length -1]);
+}
+var chart = Highcharts.chart('container', {
+	chart: {
+		type: 'spline',
+		marginRight: 50,
+		events: {
+			load: function () {
+				var series = this.series[0],
+					chart = this;
+				// activeLastPointToolip(chart);
+				var timeRuns =0;
+				
+				// var y=[
+				// 	97,54,64,54,68,42,59,41,29,36,38,40,47,37,36,35,30,18,25,30,23,26,16,18,15,11,20,17,20,15,13,20,13,14,8,13,14,10,15,18,17,22,18,23,9,17,14,14,6,14,13,13,13,8,10,11,16,8,15,6,13,18,18,19,14,20,28,20,21,20,20,17,17,15,20,25,21,24,28,19,21,21,35,52,47,40,32,25,25,45,42,35,39,56,38,55,47,63,24,32,52,67,54,56,89,85,98,91,94,79,91,126,107,101,95,105,131,140,170,172,162,149,172,175,216,226,165,183,188,224,204,219,269,267,297,319,259,278,293,363,399,370,356,351,337,391,358,341,301,386,354,417,396,491,487,381,381,404,498,576,611,606,533,503,501,542,551,698,593,595,551,554,581,689,778,670,637,564,580,595,646,800,735,654,639,590,525,582,667,664,633,542,607,617,690,754,630,636,568,532,640,601,700,633,579,518,552,541,578,615,543,453,561,502,496,519,565,523,496,503,444,438,499,482,462,454,345,309,364,420,396,364,325,298,288,258,306,292,256,225,207,222,171,160
+				// ];
+				setInterval(function () {
+					if(timeRuns+1 > data.length){    
+						clearInterval(interval);    
+					}
+					// x=Date.UTC(2020,0,timeRuns+ 1 )
+					series.addPoint(data[timeRuns], true, false);
+					//alert(newpoint[i]);
+					timeRuns +=1;
+					activeLastPointToolip(chart);
+				}, 200);
+			}
+		}
+	},
+	title: {
+		text: ''
+	},
+	xAxis: {
+		type: 'datetime',
+		dateTimeLabelFormats: {
+			day: '%Y-%m-%d'
+		},
+		lineColor: 'black',
+		tickColor: 'black',
+	},
+	yAxis: {
+		title: {
+			text: ytitle,
+			rotation: 0,
+			x:20,
+			style: { 
+				fontSize: '12px', 				
+				writingMode:'tb-rl'    //文字竖排样式
+			},
+		},
+		lineWidth:1,
+		lineColor: 'black',
+		tickColor: 'black',
+		//visible: false,
+		gridLineWidth: 1,
+        gridLineDashStyle:'Dot',
+        gridLineColor:"green",
+	},
+	tooltip: {
+		formatter: function () {
+			return '<b>' + this.series.name + ' :</b>  ' +
+				'<span style="color:red;font-size:16px">'+Highcharts.numberFormat(this.y, 0) +'</span>'+'<br/>' +
+				Highcharts.dateFormat('%Y-%m-%d', this.x) + '<br/>';
+		}
+	},
+	legend: {
+		enabled: false
+	},
+	series: [{
+		name: '发病数',
+		color:'red',
+		type: 'spline',
+		lineWidth:2,
+		//DashStyle:'Dash',
+		data: [],
+	}],
+	credits: {
+		enabled: false
+	},
+});
+
+
+</script>
+</html>

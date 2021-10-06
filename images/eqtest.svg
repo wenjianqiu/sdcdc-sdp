@@ -1,0 +1,15 @@
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="26" width="26" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path stroke="#729C62" id="svg_6" d="m1.501708,16.483965l3.644414,-8.651226l3.644414,8.651226l-7.288827,0z" stroke-width="1.5" fill="none"/>
+  <text stroke="#729C62" transform="matrix(0.8104908095489876,0,0,0.7574273058610714,1.7355153462951958,0.7006451075382554) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="12" id="svg_7" y="19.288555" x="17.334508" stroke-width="0" fill="#845335">d</text>
+  <text style="cursor: move;" stroke="#729C62" transform="matrix(0.8104908095489876,0,0,0.7574273058610714,1.7355153462951958,0.7006451075382554) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="12" id="svg_8" y="18.569068" x="10.190453" stroke-width="0" fill="#CE7975">-</text>
+  <text stroke="#729C62" transform="matrix(0.3520870080989942,0,0,1.354016179181074,9.612260687212318,-7.899341925080619) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="12" id="svg_9" y="18.928812" x="12.543789" stroke-width="0" fill="#7DD8B5">I</text>
+  <text stroke="#729C62" transform="matrix(0.3520870080989942,0,0,1.354016179181074,9.612260687212318,-7.899341925080619) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="12" id="svg_10" y="18.979121" x="34.793367" stroke-width="0" fill="#7DD8B5">I</text>
+ </g>
+</svg>

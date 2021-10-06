@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<script type="text/javascript" src=".../js/util.js"></script>
+<script type="text/javascript" src=".../.debugTemp/wpsjsrpcsdk.js"></script>
+<body>
+    <hr>
+    <div class="global" style="text-align: center;">
+              <h3>总体均数可信区间估计</h3>
+              <hr style="  border-top: 3px double  #8c8b8b;" width="90%"/>
+        
+
+        <div class="div2" style="text-align: left; margin-left: 10%;">
+            <p style="color: red;font-size: large;font-weight: bold;">第一种：总体标准差未知且样本量n较小</p>
+                <span>一、样本量：</span> <input type="text" class="input" id="n"><p></p>
+                <span>二、均数：</span> <input type="text"  class="input" id="mean"><p></p>       
+                <span>三、标准差：</span> <input type="text"  class="input" id="std"><p></p>       
+                      
+        </div>  
+        <button class="login-button" style="margin-top: 15px;" onclick="compute()">计算</button>
+
+      
+        <div style="margin-left: 5%;margin-top: 10px;">
+           
+            <table id="result">
+                <tr><th>可信区间</th><th>均数±标准差</th><th>标准误</th><th>t界值</th><th>下限</th><th>上限</th></tr>             
+                <tr>
+                    <td>95%</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                                
+                </tr>  
+            </table>
+        </div>
+        <hr width="90%"/><br>
+        <div class="div2" style="text-align: left; margin-left: 10%;">
+            <p style="color: red;font-size: large;font-weight: bold;">第二种：总体标准差未知且样本量n较大</p>
+                <span>一、样本量：</span> <input type="text" class="input" id="n1"><p></p>
+                <span>二、均数：</span> <input type="text"  class="input" id="mean1"><p></p>       
+                <span>三、标准差：</span> <input type="text"  class="input" id="std1"><p></p>       
+                      
+        </div>  
+        <button class="login-button" style="margin-top: 15px;" onclick="compute1()">计算</button>
+
+      
+        <div style="margin-left: 5%;margin-top: 10px;">
+           
+            <table id="result1">
+                <tr><th>可信区间</th><th>均数±标准差</th><th>标准误</th><th>u界值</th><th>下限</th><th>上限</th></tr>             
+                <tr>
+                    <td>95%</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                                
+                </tr>  
+            </table>
+        </div>
+
+        <hr width="90%"/><br>
+        <div class="div2" style="text-align: left; margin-left: 10%;">
+            <p style="color: red;font-size: large;font-weight: bold;">第三种：总体标准差已知(不常用)</p>
+            <span>一、样本量：</span> <input type="text" class="input" id="n2"><p></p>
+            <span>二、样本均数：</span> <input type="text"  class="input" id="mean2"><p></p>       
+            <span style="font-weight: bold;color: red;">三、总体标准差：</span> <input type="text"  class="input" id="std2"><p></p> 
+        </div>  
+        <button class="login-button" style="margin-top: 15px;" onclick="compute2()">计算</button>
+
+      
+        <div style="margin-left: 5%;margin-top: 10px;">
+           
+            <table id="result2">
+                <tr><th>可信区间</th><th>均数±标准差</th><th>标准误</th><th>u界值</th><th>下限</th><th>上限</th></tr>             
+                <tr>
+                    <td>95%</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>                                
+                </tr>  
+            </table>
+        </div>
+      
+    </div>
+</body>
+
+<script>
+
+    //执行计算
+    function compute(){
+        //获取数据
+        var n=document.getElementById('n').value*1
+        var mean=document.getElementById('mean').value*1
+        var std=document.getElementById('std').value*1
+        var Sx=std/Math.sqrt(n)
+        var v=n-1
+        var tvalue=wps.Application.ExecuteExcel4Macro("TINV(0.05,"+v+")")        
+        var lower=mean-tvalue*Sx
+        var upper=mean+tvalue*Sx
+
+       //将结果显示到表格中
+       var table=document.getElementById("result")
+       table.rows[1].cells[1].innerHTML=mean+" ± "+std
+       table.rows[1].cells[2].innerHTML=Sx.toFixed(4)
+       table.rows[1].cells[3].innerHTML=tvalue.toFixed(4)
+       table.rows[1].cells[4].innerHTML=lower.toFixed(4)
+       table.rows[1].cells[5].innerHTML=upper.toFixed(4)
+    
+    }
+   //执行计算
+   function compute1(){
+        //获取数据
+        var n=document.getElementById('n1').value*1
+        var mean=document.getElementById('mean1').value*1
+        var std=document.getElementById('std1').value*1
+        var Sx=std/Math.sqrt(n)           
+        var lower=mean-1.96*Sx
+        var upper=mean+1.96*Sx
+
+       //将结果显示到表格中
+       var table=document.getElementById("result1")
+       table.rows[1].cells[1].innerHTML=mean+" ± "+std
+       table.rows[1].cells[2].innerHTML=Sx.toFixed(4)
+       table.rows[1].cells[3].innerHTML=1.96
+       table.rows[1].cells[4].innerHTML=lower.toFixed(4)
+       table.rows[1].cells[5].innerHTML=upper.toFixed(4)
+    
+    }
+   //执行计算
+   function compute2(){
+        //获取数据
+        var n=document.getElementById('n2').value*1
+        var mean=document.getElementById('mean2').value*1
+        var std=document.getElementById('std2').value*1
+        var Sx=std/Math.sqrt(n)           
+        var lower=mean-1.96*Sx
+        var upper=mean+1.96*Sx
+
+       //将结果显示到表格中
+       var table=document.getElementById("result2")
+       table.rows[1].cells[1].innerHTML=mean+" ± "+std
+       table.rows[1].cells[2].innerHTML=Sx.toFixed(4)
+       table.rows[1].cells[3].innerHTML=1.96
+       table.rows[1].cells[4].innerHTML=lower.toFixed(4)
+       table.rows[1].cells[5].innerHTML=upper.toFixed(4)
+    
+    }
+
+</script>
+
+
+
+<style>
+    .login-button { /* 按钮美化 */
+	width: 270px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #1E90FF; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+    margin: auto;
+}
+    .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+    .global{
+        width: 100%;
+    }
+ 
+
+    table,table tr th, table tr td { border:1px solid #0094ff; }
+    table { width: 80%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse; margin: auto;}   
+
+    .input{
+                border: 1px solid #ccc;
+                padding: 7px 0px;
+                border-radius: 3px;
+                padding-left:5px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+            }
+    .input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+</style>
+
+
+</html>
