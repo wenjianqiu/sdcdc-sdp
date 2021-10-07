@@ -739,7 +739,7 @@ function OnAction(control) {
                                 
             }
             break
-        
+
         //表格操作程序
         case "many2one":  //多表合并汇总
             {
