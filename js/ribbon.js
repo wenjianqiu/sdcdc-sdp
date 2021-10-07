@@ -740,6 +740,38 @@ function OnAction(control) {
             }
             break
 
+            case "trans_date":
+                {
+                    var str=""
+                    var arr = wps.Application.Selection.Formula
+                    for(var i =0;i<arr.length;i++){
+                        for(var j=0;j<arr[i].length;j++){
+                                str=arr[i][j]
+                                    if(/\d{8}/.test(str)){
+                                        //符合20200812格式的使用这个方法
+                                        str=str.slice(0,4)+"/"+str.slice(4,6)+"/"+str.slice(6,8)
+                                    }
+                                    if(/\d{4}[\.\+\-]\d+[\.\+\-]\d+/.test(str)){
+                                        //符合2020-08-12;2020.08.12;2020+08+12格式的使用这个方法                                        
+                                        str=str.replace(/[\.\+\-]/g,"/")
+                                    }
+                                    if(/\d+\.\d+/.test(str)){                                        
+                                        //符合8.12格式的使用这个方法
+                                        str=str.replace(/\./g,"/")
+                                    }
+                                
+
+                                arr[i][j]=str 
+                                str="" 
+
+                        } 
+                        
+                    }
+                    wps.Application.Selection.Formula=arr
+                                    
+                }
+                break
+
         //表格操作程序
         case "many2one":  //多表合并汇总
             {
